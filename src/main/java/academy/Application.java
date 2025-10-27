@@ -1,5 +1,7 @@
 package academy;
 
+import academy.cli.GenerateCommand;
+import academy.cli.SolveCommand;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -13,26 +15,25 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-@Command(name = "Application Example", version = "Example 1.0", mixinStandardHelpOptions = true)
+@Command(
+        name = "maze-app",
+        version = "1.0",
+        description = "Maze generator and solver CLI application.",
+        mixinStandardHelpOptions = true,
+        subcommands = {GenerateCommand.class, SolveCommand.class})
 public class Application implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
     private static final ObjectReader YAML_READER =
             new ObjectMapper(new YAMLFactory()).findAndRegisterModules().reader();
 
-    @Option(
-            names = {"-s", "--font-size"},
-            description = "Font size")
+    // Hidden legacy/demo options preserved but not shown in help
+    @Option(names = {"-s", "--font-size"}, description = "Font size", hidden = true)
     int fontSize;
 
-    @Parameters(
-            paramLabel = "<word>",
-            defaultValue = "Hello, picocli",
-            description = "Words to be translated into ASCII art.")
+    @Parameters(paramLabel = "<word>", description = "Words to be processed.", hidden = true)
     private String[] words;
 
-    @Option(
-            names = {"-c", "--config"},
-            description = "Path to JSON config file")
+    @Option(names = {"-c", "--config"}, description = "Path to YAML config file", hidden = true)
     private File configPath;
 
     public static void main(String[] args) {
@@ -42,17 +43,19 @@ public class Application implements Runnable {
 
     @Override
     public void run() {
-        var config = loadConfig();
-        LOGGER.atInfo().addKeyValue("config", config).log("Config content");
-
-        // ... logic
+        // Optionally load legacy/demo config (hidden options)
+        try {
+            var config = loadConfig();
+            LOGGER.atInfo().addKeyValue("config", config).log("Config content");
+        } catch (RuntimeException ex) {
+            LOGGER.warn("Config load skipped/failed: {}", ex.toString());
+        }
+        // Root command just shows help when no subcommand provided
+        new CommandLine(this).usage(System.out);
     }
 
     private AppConfig loadConfig() {
-        // fill with cli options
         if (configPath == null) return new AppConfig(fontSize, words);
-
-        // use config file if provided
         try {
             return YAML_READER.readValue(configPath, AppConfig.class);
         } catch (IOException e) {
