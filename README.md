@@ -118,3 +118,54 @@ cat out_dijkstra.txt
 Примечания:
 - Координаты `-s` и `-e` должны приходиться на проходы (пробелы), а не на `#`.
 - Для эстетичного узора стен используйте нечётные размеры (например, `21x11`).
+
+## Запуск Black Box тестов
+
+Тесты находятся в каталоге `tests/cases` и запускаются скриптом-раннером.
+
+Предусловие: соберите Docker-образ `app` (единожды)
+
+```bash
+# Linux / macOS / WSL
+./mvnw -q -DskipTests package
+docker build -t app .
+```
+
+Запуск всех сценариев
+
+- Linux / macOS:
+
+```bash
+tests/run.sh tests/cases
+```
+
+- Windows (WSL рекомендуется):
+
+```bash
+# из PowerShell (без входа в WSL)
+wsl bash -lc "cd /mnt/c/workspace/t-academy/hw2-labyrinths && tests/run.sh tests/cases"
+
+# или внутри терминала WSL
+cd /mnt/c/workspace/t-academy/hw2-labyrinths
+bash tests/run.sh tests/cases
+```
+
+Замечание для Windows (CRLF → LF)
+
+Если видите ошибки вида `: not found` или странные строки вроде `' Unknown option: '--help`, это, как правило, из‑за переводов строк (CRLF). Исправление:
+
+```bash
+# в корне проекта (в WSL)
+git config core.autocrlf false
+git checkout -- tests tests/run.sh
+# затем повторно
+bash tests/run.sh tests/cases
+```
+
+Альтернатива:
+
+```bash
+sudo apt-get update && sudo apt-get install -y dos2unix
+dos2unix tests/run.sh tests/cases/*/*.txt
+bash tests/run.sh tests/cases
+```
