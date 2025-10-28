@@ -8,6 +8,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
+import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -55,7 +57,7 @@ public class Application implements Runnable {
     }
 
     private AppConfig loadConfig() {
-        if (configPath == null) return new AppConfig(fontSize, words);
+        if (configPath == null) return new AppConfig(fontSize, words == null ? Collections.emptyList() : Arrays.asList(words));
         try {
             return YAML_READER.readValue(configPath, AppConfig.class);
         } catch (IOException e) {

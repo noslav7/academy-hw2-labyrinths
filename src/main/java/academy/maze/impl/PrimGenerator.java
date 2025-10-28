@@ -14,38 +14,55 @@ public class PrimGenerator implements Generator {
         CellType[][] cells = new CellType[height][width];
         for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.WALL;
 
+        // For very small mazes, just open everything inside
+        if (width < 3 || height < 3) {
+            for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.PATH;
+            return new Maze(cells);
+        }
+
         boolean[][] inMaze = new boolean[height][width];
         Random rnd = new Random();
-        int sx = 0, sy = 0;
+        int sx = 1, sy = 1; // start on odd cell
         inMaze[sy][sx] = true;
         cells[sy][sx] = CellType.PATH;
         List<int[]> frontier = new ArrayList<>();
-        addFrontier(sx, sy, frontier, width, height);
+        addFrontierOdd(sx, sy, frontier, width, height);
+
         while (!frontier.isEmpty()) {
             int idx = rnd.nextInt(frontier.size());
             int[] f = frontier.remove(idx);
             int fx = f[0], fy = f[1];
             if (inMaze[fy][fx]) continue;
-            // connect to one random neighbor already in maze
+
+            // neighbors at distance 2 that are already in the maze (odd-grid)
             List<int[]> inNeighbors = new ArrayList<>();
-            if (fx > 0 && inMaze[fy][fx - 1]) inNeighbors.add(new int[] {fx - 1, fy});
-            if (fx < width - 1 && inMaze[fy][fx + 1]) inNeighbors.add(new int[] {fx + 1, fy});
-            if (fy > 0 && inMaze[fy - 1][fx]) inNeighbors.add(new int[] {fx, fy - 1});
-            if (fy < height - 1 && inMaze[fy + 1][fx]) inNeighbors.add(new int[] {fx, fy + 1});
+            if (fx > 1 && inMaze[fy][fx - 2]) inNeighbors.add(new int[] {fx - 2, fy});
+            if (fx < width - 2 && inMaze[fy][fx + 2]) inNeighbors.add(new int[] {fx + 2, fy});
+            if (fy > 1 && inMaze[fy - 2][fx]) inNeighbors.add(new int[] {fx, fy - 2});
+            if (fy < height - 2 && inMaze[fy + 2][fx]) inNeighbors.add(new int[] {fx, fy + 2});
             if (inNeighbors.isEmpty()) continue;
-            // open this cell
+
+            int[] n = inNeighbors.get(rnd.nextInt(inNeighbors.size()));
+            int nx = n[0], ny = n[1];
+
+            // open the wall between (fx, fy) and (nx, ny)
+            int bx = (fx + nx) / 2;
+            int by = (fy + ny) / 2;
+            cells[by][bx] = CellType.PATH;
+
+            // open the frontier cell and mark it in the maze
             cells[fy][fx] = CellType.PATH;
             inMaze[fy][fx] = true;
-            addFrontier(fx, fy, frontier, width, height);
+            addFrontierOdd(fx, fy, frontier, width, height);
         }
         return new Maze(cells);
     }
 
-    private void addFrontier(int x, int y, List<int[]> frontier, int w, int h) {
-        if (x > 0) frontier.add(new int[] {x - 1, y});
-        if (x < w - 1) frontier.add(new int[] {x + 1, y});
-        if (y > 0) frontier.add(new int[] {x, y - 1});
-        if (y < h - 1) frontier.add(new int[] {x, y + 1});
+    private void addFrontierOdd(int x, int y, List<int[]> frontier, int w, int h) {
+        if (x > 1) frontier.add(new int[] {x - 2, y});
+        if (x < w - 2) frontier.add(new int[] {x + 2, y});
+        if (y > 1) frontier.add(new int[] {x, y - 2});
+        if (y < h - 2) frontier.add(new int[] {x, y + 2});
     }
 }
 

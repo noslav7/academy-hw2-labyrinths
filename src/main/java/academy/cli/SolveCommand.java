@@ -39,6 +39,27 @@ public class SolveCommand implements Runnable {
         Point end = parsePointOrExit(endStr);
 
         Maze maze = readMaze(mazeFile);
+        int width = maze.cells().length == 0 ? 0 : maze.cells()[0].length;
+        int height = maze.cells().length;
+
+        if (!inBounds(start, width, height)) {
+            System.out.println(
+                    "Start point is out of bounds: " + start + ", expected within [0," + (width - 1) + "]x[0," + (height - 1) + "]");
+            System.exit(0);
+        }
+        if (!inBounds(end, width, height)) {
+            System.out.println(
+                    "End point is out of bounds: " + end + ", expected within [0," + (width - 1) + "]x[0," + (height - 1) + "]");
+            System.exit(0);
+        }
+        if (maze.cells()[start.y()][start.x()] == CellType.WALL) {
+            System.out.println("Start point is on a wall: " + start + ". Choose coordinates where the maze has a space ' '.");
+            System.exit(0);
+        }
+        if (maze.cells()[end.y()][end.x()] == CellType.WALL) {
+            System.out.println("End point is on a wall: " + end + ". Choose coordinates where the maze has a space ' '.");
+            System.exit(0);
+        }
 
         Solver solver = switch (algorithm.toLowerCase()) {
             case "astar", "a-star", "a*" -> new AStarSolver();
@@ -80,6 +101,10 @@ public class SolveCommand implements Runnable {
             System.exit(0);
             return new Point(0, 0); // unreachable
         }
+    }
+
+    private boolean inBounds(Point p, int w, int h) {
+        return p.x() >= 0 && p.x() < w && p.y() >= 0 && p.y() < h;
     }
 
     private Maze readMaze(File file) {
