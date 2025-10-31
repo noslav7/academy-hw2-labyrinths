@@ -8,6 +8,16 @@ import java.util.List;
 import java.util.Random;
 
 public class PrimGenerator implements Generator {
+    private final Random random;
+
+    public PrimGenerator() {
+        this(new Random());
+    }
+
+    // package-private for tests
+    PrimGenerator(Random random) {
+        this.random = random;
+    }
     @Override
     public Maze generate(int width, int height) {
         if (width <= 0 || height <= 0) throw new IllegalArgumentException("Invalid size");
@@ -21,7 +31,6 @@ public class PrimGenerator implements Generator {
         }
 
         boolean[][] inMaze = new boolean[height][width];
-        Random rnd = new Random();
         int sx = 1, sy = 1; // start on odd cell
         inMaze[sy][sx] = true;
         cells[sy][sx] = CellType.PATH;
@@ -29,7 +38,7 @@ public class PrimGenerator implements Generator {
         addFrontierOdd(sx, sy, frontier, width, height);
 
         while (!frontier.isEmpty()) {
-            int idx = rnd.nextInt(frontier.size());
+            int idx = random.nextInt(frontier.size());
             int[] f = frontier.remove(idx);
             int fx = f[0], fy = f[1];
             if (inMaze[fy][fx]) continue;
@@ -42,7 +51,7 @@ public class PrimGenerator implements Generator {
             if (fy < height - 2 && inMaze[fy + 2][fx]) inNeighbors.add(new int[] {fx, fy + 2});
             if (inNeighbors.isEmpty()) continue;
 
-            int[] n = inNeighbors.get(rnd.nextInt(inNeighbors.size()));
+            int[] n = inNeighbors.get(random.nextInt(inNeighbors.size()));
             int nx = n[0], ny = n[1];
 
             // open the wall between (fx, fy) and (nx, ny)

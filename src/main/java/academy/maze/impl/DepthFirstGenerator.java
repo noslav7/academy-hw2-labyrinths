@@ -9,6 +9,16 @@ import java.util.List;
 import java.util.Random;
 
 public class DepthFirstGenerator implements Generator {
+    private final Random random;
+
+    public DepthFirstGenerator() {
+        this(new Random());
+    }
+
+    // package-private for tests
+    DepthFirstGenerator(Random random) {
+        this.random = random;
+    }
     @Override
     public Maze generate(int width, int height) {
         if (width <= 0 || height <= 0) throw new IllegalArgumentException("Invalid size");
@@ -22,9 +32,8 @@ public class DepthFirstGenerator implements Generator {
         }
 
         boolean[][] visitedRooms = new boolean[height][width];
-        Random rnd = new Random();
         // Start from the first odd cell inside the border
-        carveRooms(1, 1, cells, visitedRooms, rnd, width, height);
+        carveRooms(1, 1, cells, visitedRooms, random, width, height);
         return new Maze(cells);
     }
 
