@@ -29,3 +29,7 @@ hs_err_pid*
 
 ### Tests ###
 tests/tmp/
+maze_dfs.txt
+maze_prim.txt
+out_astar.txt
+out_dijkstra.txt
