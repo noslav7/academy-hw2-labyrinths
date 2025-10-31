@@ -17,6 +17,9 @@
 
 ```bash
 ./run-local.sh --help
+./run-local.sh --version
+./run-local.sh generate --help
+./run-local.sh solve --help
 ./run-local.sh generate -a dfs -w 10 -h 10 -o maze.txt
 ./run-local.sh solve -a astar -f tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o out.txt
 ```
@@ -25,6 +28,9 @@
 
 ```bash
 ./run-docker.sh --help
+./run-docker.sh --version
+./run-docker.sh generate --help
+./run-docker.sh solve --help
 ./run-docker.sh generate -a dfs -w 10 -h 10 -o /tests/tmp/maze.txt
 ./run-docker.sh solve -a astar -f /tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o /tests/tmp/out.txt
 ```
@@ -35,6 +41,9 @@
 
 ```cmd
 .\run-local.cmd --help
+.\run-local.cmd --version
+.\run-local.cmd generate --help
+.\run-local.cmd solve --help
 .\run-local.cmd generate -a dfs -w 10 -h 10 -o maze.txt
 .\run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 -o out.txt
 ```
@@ -43,6 +52,9 @@
 
 ```cmd
 run-local.cmd --help
+run-local.cmd --version
+run-local.cmd generate --help
+run-local.cmd solve --help
 run-local.cmd generate -a dfs -w 10 -h 10 -o maze.txt
 run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 -o out.txt
 ```
@@ -53,6 +65,9 @@ run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1
 
   ```cmd
   .\run-docker.cmd --help
+  .\run-docker.cmd --version
+  .\run-docker.cmd generate --help
+  .\run-docker.cmd solve --help
   .\run-docker.cmd generate -a dfs -w 10 -h 10 -o /tests/tmp/maze.txt
   .\run-docker.cmd solve -a astar -f /tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o /tests/tmp/out.txt
   ```
@@ -61,6 +76,9 @@ run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1
 
   ```cmd
   run-docker.cmd --help
+  run-docker.cmd --version
+  run-docker.cmd generate --help
+  run-docker.cmd solve --help
   run-docker.cmd generate -a dfs -w 10 -h 10 -o /tests/tmp/maze.txt
   run-docker.cmd solve -a astar -f /tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o /tests/tmp/out.txt
   ```
