@@ -6,7 +6,9 @@ import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
 import academy.maze.impl.AStarSolver;
+import academy.maze.impl.BreadthFirstSolver;
 import academy.maze.impl.DijkstraSolver;
+import academy.maze.impl.GreedyBestFirstSolver;
 import academy.util.MazeIO;
 import academy.util.MazeRenderer;
 import academy.util.PointParser;
@@ -63,6 +65,8 @@ public class SolveCommand implements Runnable {
         Solver solver = switch (algorithm.toLowerCase()) {
             case "astar", "a-star", "a*" -> new AStarSolver();
             case "dijkstra" -> new DijkstraSolver();
+            case "bfs" -> new BreadthFirstSolver();
+            case "greedy", "gbfs" -> new GreedyBestFirstSolver();
             default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
         };
 

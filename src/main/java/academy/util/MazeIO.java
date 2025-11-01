@@ -2,6 +2,7 @@ package academy.util;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
+import academy.maze.dto.TerrainType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,14 +19,21 @@ public final class MazeIO {
             int width = lines.get(0).length();
             int height = lines.size();
             CellType[][] cells = new CellType[height][width];
+            TerrainType[][] terrain = new TerrainType[height][width];
             for (int y = 0; y < height; y++) {
                 String line = lines.get(y);
                 for (int x = 0; x < width; x++) {
                     char c = line.charAt(x);
-                    cells[y][x] = (c == '#') ? CellType.WALL : CellType.PATH;
+                    if (c == '#') {
+                        cells[y][x] = CellType.WALL;
+                        terrain[y][x] = TerrainType.NORMAL;
+                    } else {
+                        cells[y][x] = CellType.PATH;
+                        terrain[y][x] = TerrainType.fromChar(c);
+                    }
                 }
             }
-            return new Maze(cells);
+            return new Maze(cells, terrain);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

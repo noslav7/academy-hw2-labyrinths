@@ -53,7 +53,7 @@ public class AStarSolver implements Solver {
                 if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
                 if (maze.cells()[ny][nx] == CellType.WALL) continue;
                 int nKey = key(nx, ny, w);
-                int tentative = g.getOrDefault(cKey, Integer.MAX_VALUE / 4) + 1;
+                int tentative = g.getOrDefault(cKey, Integer.MAX_VALUE / 4) + maze.costAt(nx, ny);
                 if (tentative < g.getOrDefault(nKey, Integer.MAX_VALUE / 4)) {
                     came.put(nKey, cKey);
                     g.put(nKey, tentative);

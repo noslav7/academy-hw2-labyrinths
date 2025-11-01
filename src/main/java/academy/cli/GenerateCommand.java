@@ -4,6 +4,7 @@ import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.impl.DepthFirstGenerator;
+import academy.maze.impl.KruskalGenerator;
 import academy.maze.impl.PrimGenerator;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class GenerateCommand implements Runnable {
         Generator generator = switch (algorithm.toLowerCase()) {
             case "dfs" -> new DepthFirstGenerator();
             case "prim" -> new PrimGenerator();
+            case "kruskal" -> new KruskalGenerator();
             default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
         };
 

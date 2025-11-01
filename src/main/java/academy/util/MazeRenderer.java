@@ -14,12 +14,17 @@ public final class MazeRenderer {
         char[][] out = new char[height][width];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                out[y][x] = maze.cells()[y][x] == CellType.WALL ? '#' : ' ';
+                if (maze.cells()[y][x] == CellType.WALL) {
+                    out[y][x] = '#';
+                } else {
+                    // отрисовываем символ поверхности
+                    out[y][x] = maze.terrain()[y][x].symbol();
+                }
             }
         }
         for (Point p : path.points()) {
             if (p.x() >= 0 && p.x() < width && p.y() >= 0 && p.y() < height) {
-                out[p.y()][p.x()] = '.';
+                out[p.y()][p.x()] = '+';
             }
         }
         if (start.x() >= 0 && start.x() < width && start.y() >= 0 && start.y() < height) out[start.y()][start.x()] = 'O';
