@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import academy.maze.util.Mazes;
 
 public class DepthFirstGenerator implements Generator {
     private final Random random;
@@ -27,8 +28,7 @@ public class DepthFirstGenerator implements Generator {
 
         // Small grids cannot form corridors with separating walls; open them fully
         if (width < 3 || height < 3) {
-            for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.PATH;
-            return new Maze(cells);
+            return Mazes.openAll(width, height);
         }
 
         boolean[][] visitedRooms = new boolean[height][width];

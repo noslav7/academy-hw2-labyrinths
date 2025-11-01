@@ -9,28 +9,35 @@ import academy.maze.dto.Path;
 import academy.maze.dto.Point;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class DepthFirstGeneratorTest {
 
-    @Test
-    void invalidSizeThrows() {
+    @ParameterizedTest(name = "[{index}] invalid size w={0}, h={1}")
+    @CsvSource({
+        "0,5",
+        "5,0",
+        "-1,3"
+    })
+    void givenInvalidSize_whenGenerate_thenThrowIllegalArgument(int w, int h) {
         DepthFirstGenerator gen = new DepthFirstGenerator(new Random(1));
-        assertThatThrownBy(() -> gen.generate(0, 5)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> gen.generate(5, 0)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> gen.generate(-1, 3)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> gen.generate(w, h)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest(name = "[{index}] small grid w={0}, h={1} opens all")
+    @CsvSource({
+        "1,1",
+        "2,2"
+    })
+    void givenSmallGrid_whenGenerate_thenAllCellsArePath(int w, int h) {
+        DepthFirstGenerator gen = new DepthFirstGenerator(new Random(1));
+        Maze m = gen.generate(w, h);
+        assertAllPath(m);
     }
 
     @Test
-    void smallGridOpensAll() {
-        DepthFirstGenerator gen = new DepthFirstGenerator(new Random(1));
-        Maze m1 = gen.generate(1, 1);
-        assertAllPath(m1);
-        Maze m2 = gen.generate(2, 2);
-        assertAllPath(m2);
-    }
-
-    @Test
-    void typicalGridHasWallsOnBorderAndPathsInside() {
+    void givenTypicalSize_whenGenerate_thenBordersAreWallsAndInsideHasPaths() {
         DepthFirstGenerator gen = new DepthFirstGenerator(new Random(123));
         int w = 21, h = 11;
         Maze m = gen.generate(w, h);
@@ -51,7 +58,7 @@ class DepthFirstGeneratorTest {
     }
 
     @Test
-    void mazeIsSolvableBetweenTwoOpenCells() {
+    void givenTwoOpenCells_whenSolveAStar_thenPathExistsFromStartToEnd() {
         DepthFirstGenerator gen = new DepthFirstGenerator(new Random(42));
         Maze m = gen.generate(21, 11);
         Point start = firstPath(m);
@@ -65,7 +72,7 @@ class DepthFirstGeneratorTest {
     }
 
     @Test
-    void sameSeedProducesSameMaze() {
+    void givenSameSeed_whenGenerate_thenMazesAreIdentical() {
         int w = 21, h = 11;
         DepthFirstGenerator g1 = new DepthFirstGenerator(new Random(100));
         DepthFirstGenerator g2 = new DepthFirstGenerator(new Random(100));

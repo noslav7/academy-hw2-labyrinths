@@ -6,6 +6,7 @@ import academy.maze.dto.Maze;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import academy.maze.util.Mazes;
 
 public class PrimGenerator implements Generator {
     private final Random random;
@@ -26,8 +27,7 @@ public class PrimGenerator implements Generator {
 
         // For very small mazes, just open everything inside
         if (width < 3 || height < 3) {
-            for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.PATH;
-            return new Maze(cells);
+            return Mazes.openAll(width, height);
         }
 
         boolean[][] inMaze = new boolean[height][width];

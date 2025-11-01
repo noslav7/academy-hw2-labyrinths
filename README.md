@@ -168,6 +168,14 @@ cd /mnt/c/workspace/t-academy/hw2-labyrinths
 bash tests/run.sh tests/cases
 ```
 
+Примечание (Windows): если видите сообщение `set: Illegal option -o pipefail`, запускайте раннер именно под bash (а не sh):
+
+```bash
+wsl bash -lc "cd /mnt/c/workspace/t-academy/hw2-labyrinths && tests/run.sh tests/cases"
+# или
+bash tests/run.sh tests/cases
+```
+
 Замечание для Windows (CRLF → LF)
 
 Если видите ошибки вида `: not found` или странные строки вроде `' Unknown option: '--help`, это, как правило, из‑за переводов строк (CRLF). Исправление:
