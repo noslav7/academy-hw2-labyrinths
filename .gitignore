@@ -33,3 +33,5 @@ maze_dfs.txt
 maze_prim.txt
 out_astar.txt
 out_dijkstra.txt
+maze_kruskal.txt
+out_greedy.txt
