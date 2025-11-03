@@ -64,9 +64,9 @@ class MazeRendererTest {
         String[] lines = rendered.split("\n");
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(lines[0].charAt(0)).isEqualTo('█');
-        softly.assertThat(lines[0].charAt(1)).isEqualTo('◉');
+        softly.assertThat(lines[0].charAt(1)).isEqualTo('O');
         softly.assertThat(lines[1].charAt(0)).isEqualTo('░');
-        softly.assertThat(lines[1].charAt(1)).isEqualTo('◎');
+        softly.assertThat(lines[1].charAt(1)).isEqualTo('X');
 
         String withBorder = MazeRenderer.renderMaze(maze, MazeRenderer.GlyphStyle.UNICODE, true);
         String[] bordered = withBorder.split("\n");

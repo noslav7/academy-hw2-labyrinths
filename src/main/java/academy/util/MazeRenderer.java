@@ -23,16 +23,17 @@ public final class MazeRenderer {
         int width = out.length == 0 ? 0 : out[0].length;
         int height = out.length;
 
+        char pathChar = '+';
         if (path != null) {
             for (Point p : path.points()) {
                 if (isInBounds(p, width, height)) {
-                    out[p.y()][p.x()] = style == GlyphStyle.ASCII ? '+' : '●';
+                    out[p.y()][p.x()] = pathChar;
                 }
             }
         }
 
-        if (isInBounds(start, width, height)) out[start.y()][start.x()] = style == GlyphStyle.ASCII ? 'O' : '◉';
-        if (isInBounds(end, width, height)) out[end.y()][end.x()] = style == GlyphStyle.ASCII ? 'X' : '◎';
+        if (isInBounds(start, width, height)) out[start.y()][start.x()] = 'O';
+        if (isInBounds(end, width, height)) out[end.y()][end.x()] = 'X';
 
         return toText(out);
     }
