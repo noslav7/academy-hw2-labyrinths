@@ -7,6 +7,7 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
+import academy.maze.dto.TerrainType;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,6 +35,7 @@ class DepthFirstGeneratorTest {
         DepthFirstGenerator gen = new DepthFirstGenerator(new Random(1));
         Maze m = gen.generate(w, h);
         assertAllPath(m);
+        assertTerrainGenerated(m);
     }
 
     @Test
@@ -55,6 +57,7 @@ class DepthFirstGeneratorTest {
         // at least some paths inside
         long pathCount = countPaths(c);
         assertThat(pathCount).isGreaterThan(0);
+        assertTerrainGenerated(m);
     }
 
     @Test
@@ -79,6 +82,28 @@ class DepthFirstGeneratorTest {
         Maze m1 = g1.generate(w, h);
         Maze m2 = g2.generate(w, h);
         assertThat(equalCells(m1.cells(), m2.cells())).isTrue();
+        assertThat(equalTerrain(m1.terrain(), m2.terrain())).isTrue();
+    }
+
+    private static void assertTerrainGenerated(Maze m) {
+        TerrainType[][] terrain = m.terrain();
+        assertThat(terrain).isNotNull();
+        CellType[][] cells = m.cells();
+        int special = 0;
+        int pathCells = 0;
+        for (int y = 0; y < terrain.length; y++) {
+            for (int x = 0; x < terrain[y].length; x++) {
+                if (cells[y][x] == CellType.WALL) {
+                    assertThat(terrain[y][x]).isEqualTo(TerrainType.NORMAL);
+                } else {
+                    pathCells++;
+                    if (terrain[y][x] != TerrainType.NORMAL) special++;
+                }
+            }
+        }
+        if (pathCells > 0) {
+            assertThat(special).isGreaterThan(0);
+        }
     }
 
     private static void assertAllPath(Maze m) {
@@ -93,6 +118,15 @@ class DepthFirstGeneratorTest {
     }
 
     private static boolean equalCells(CellType[][] a, CellType[][] b) {
+        if (a.length != b.length) return false;
+        if (a.length == 0) return b.length == 0;
+        if (a[0].length != b[0].length) return false;
+        int h = a.length, w = a[0].length;
+        for (int y = 0; y < h; y++) for (int x = 0; x < w; x++) if (a[y][x] != b[y][x]) return false;
+        return true;
+    }
+
+    private static boolean equalTerrain(TerrainType[][] a, TerrainType[][] b) {
         if (a.length != b.length) return false;
         if (a.length == 0) return b.length == 0;
         if (a[0].length != b[0].length) return false;

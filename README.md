@@ -23,6 +23,7 @@
 ./run-local.sh generate -a dfs -w 10 -h 10 -o maze.txt
 ./run-local.sh solve -a astar -f tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o out.txt
 # Отрисовка Unicode:
+./run-local.sh generate -a dfs -w 21 -h 11 --unicode -o maze_unicode.txt
 ./run-local.sh solve -a astar -f tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 --unicode
 ```
 
@@ -35,6 +36,7 @@
 ./run-docker.sh solve --help
 ./run-docker.sh generate -a dfs -w 10 -h 10 -o /tests/tmp/maze.txt
 ./run-docker.sh solve -a astar -f /tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o /tests/tmp/out.txt
+./run-docker.sh generate -a dfs -w 21 -h 11 --unicode -o /tests/tmp/maze_unicode.txt
 ```
 
 ### Windows
@@ -48,6 +50,9 @@
 .\run-local.cmd solve --help
 .\run-local.cmd generate -a dfs -w 10 -h 10 -o maze.txt
 .\run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 -o out.txt
+# Отрисовка Unicode:
+.\run-local.cmd generate -a dfs -w 21 -h 11 --unicode -o maze_unicode.txt
+.\run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 --unicode
 ```
 
 - CMD:
@@ -60,8 +65,11 @@ run-local.cmd solve --help
 run-local.cmd generate -a dfs -w 10 -h 10 -o maze.txt
 run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 -o out.txt
 # Отрисовка Unicode:
+run-local.cmd generate -a dfs -w 21 -h 11 --unicode -o maze_unicode.txt
 run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 --unicode
 ```
+
+> Чтобы увидеть Unicode-псевдографику в PowerShell/CMD без «кракозябр», перед просмотром файла выполните `chcp 65001` или используйте `Get-Content -Encoding utf8 файл.txt`.
 
 - В Docker:
 
@@ -74,6 +82,7 @@ run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1
   .\run-docker.cmd solve --help
   .\run-docker.cmd generate -a dfs -w 10 -h 10 -o /tests/tmp/maze.txt
   .\run-docker.cmd solve -a astar -f /tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o /tests/tmp/out.txt
+  .\run-docker.cmd generate -a dfs -w 21 -h 11 --unicode -o /tests/tmp/maze_unicode.txt
   ```
 
   - CMD:
@@ -85,6 +94,7 @@ run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1
   run-docker.cmd solve --help
   run-docker.cmd generate -a dfs -w 10 -h 10 -o /tests/tmp/maze.txt
   run-docker.cmd solve -a astar -f /tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o /tests/tmp/out.txt
+  run-docker.cmd generate -a dfs -w 21 -h 11 --unicode -o /tests/tmp/maze_unicode.txt
   ```
 
 ## Эквиваленты без скриптов (локально)
@@ -100,18 +110,30 @@ run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1
 # Генерация: DFS
 java -cp .\target\project-1.0.jar academy.Application generate -a dfs -w 21 -h 11 -o .\maze_dfs.txt
 type .\maze_dfs.txt
+# Unicode-вариант:
+java -cp .\target\project-1.0.jar academy.Application generate -a dfs -w 21 -h 11 --unicode -o .\maze_dfs_unicode.txt
+Get-Content -Encoding utf8 .\maze_dfs_unicode.txt
 
 # Генерация: Prim
 java -cp .\target\project-1.0.jar academy.Application generate -a prim -w 21 -h 11 -o .\maze_prim.txt
 type .\maze_prim.txt
+# Unicode-вариант:
+java -cp .\target\project-1.0.jar academy.Application generate -a prim -w 21 -h 11 --unicode -o .\maze_prim_unicode.txt
+Get-Content -Encoding utf8 .\maze_prim_unicode.txt
 
 # Решение: A*
 java -cp .\target\project-1.0.jar academy.Application solve -a astar -f .\maze_dfs.txt -s 2,2 -e 19,10 -o .\out_astar.txt
 type .\out_astar.txt
+# Unicode-вариант:
+java -cp .\target\project-1.0.jar academy.Application solve -a astar -f .\maze_dfs.txt -s 2,2 -e 19,10 --unicode -o .\out_astar_unicode.txt
+Get-Content -Encoding utf8 .\out_astar_unicode.txt
 
 # Решение: Dijkstra
 java -cp .\target\project-1.0.jar academy.Application solve -a dijkstra -f .\maze_dfs.txt -s 2,2 -e 19,10 -o .\out_dijkstra.txt
 type .\out_dijkstra.txt
+# Unicode-вариант:
+java -cp .\target\project-1.0.jar academy.Application solve -a dijkstra -f .\maze_dfs.txt -s 2,2 -e 19,10 --unicode -o .\out_dijkstra_unicode.txt
+Get-Content -Encoding utf8 .\out_dijkstra_unicode.txt
 ```
 
 ### Linux / macOS
@@ -123,23 +145,36 @@ type .\out_dijkstra.txt
 # Генерация: DFS
 java -cp ./target/project-1.0.jar academy.Application generate -a dfs -w 21 -h 11 -o maze_dfs.txt
 cat maze_dfs.txt
+# Unicode-вариант:
+java -cp ./target/project-1.0.jar academy.Application generate -a dfs -w 21 -h 11 --unicode -o maze_dfs_unicode.txt
+cat maze_dfs_unicode.txt
 
 # Генерация: Prim
 java -cp ./target/project-1.0.jar academy.Application generate -a prim -w 21 -h 11 -o maze_prim.txt
 cat maze_prim.txt
+# Unicode-вариант:
+java -cp ./target/project-1.0.jar academy.Application generate -a prim -w 21 -h 11 --unicode -o maze_prim_unicode.txt
+cat maze_prim_unicode.txt
 
 # Решение: A*
 java -cp ./target/project-1.0.jar academy.Application solve -a astar -f ./maze_dfs.txt -s 2,2 -e 19,10 -o ./out_astar.txt
 cat out_astar.txt
+# Unicode-вариант:
+java -cp ./target/project-1.0.jar academy.Application solve -a astar -f ./maze_dfs.txt -s 2,2 -e 19,10 --unicode -o ./out_astar_unicode.txt
+cat out_astar_unicode.txt
 
 # Решение: Dijkstra
 java -cp ./target/project-1.0.jar academy.Application solve -a dijkstra -f ./maze_dfs.txt -s 2,2 -e 19,10 -o ./out_dijkstra.txt
 cat out_dijkstra.txt
+# Unicode-вариант:
+java -cp ./target/project-1.0.jar academy.Application solve -a dijkstra -f ./maze_dfs.txt -s 2,2 -e 19,10 --unicode -o ./out_dijkstra_unicode.txt
+cat out_dijkstra_unicode.txt
 ```
 
 Примечания:
 - Координаты `-s` и `-e` должны приходиться на проходы (пробелы), а не на `#`.
 - Для эстетичного узора стен используйте нечётные размеры (например, `21x11`).
+- Генераторы автоматически добавляют случайные типы поверхностей (`~`, `^`, `.`), их стоимость учитывается алгоритмами решения.
 
 ## Запуск Black Box тестов
 

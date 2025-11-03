@@ -4,6 +4,7 @@ import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.util.Mazes;
+import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ public class KruskalGenerator implements Generator {
         for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.WALL;
 
         if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height);
+            return Mazes.openAll(width, height, random);
         }
 
         // список «комнат» на нечётных координатах
@@ -65,7 +66,7 @@ public class KruskalGenerator implements Generator {
             }
         }
 
-        return new Maze(cells);
+        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
     }
 
     private int roomIndex(int x, int y, int rw) { return (y - 1) / 2 * rw + (x - 1) / 2; }

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import academy.maze.util.Mazes;
+import academy.maze.util.TerrainRandomizer;
 
 public class DepthFirstGenerator implements Generator {
     private final Random random;
@@ -28,13 +29,13 @@ public class DepthFirstGenerator implements Generator {
 
         // Small grids cannot form corridors with separating walls; open them fully
         if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height);
+            return Mazes.openAll(width, height, random);
         }
 
         boolean[][] visitedRooms = new boolean[height][width];
         // Start from the first odd cell inside the border
         carveRooms(1, 1, cells, visitedRooms, random, width, height);
-        return new Maze(cells);
+        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
     }
 
     // Recursive backtracker over a grid of "rooms" located at odd coordinates.

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import academy.maze.util.Mazes;
+import academy.maze.util.TerrainRandomizer;
 
 public class PrimGenerator implements Generator {
     private final Random random;
@@ -27,7 +28,7 @@ public class PrimGenerator implements Generator {
 
         // For very small mazes, just open everything inside
         if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height);
+            return Mazes.openAll(width, height, random);
         }
 
         boolean[][] inMaze = new boolean[height][width];
@@ -64,7 +65,7 @@ public class PrimGenerator implements Generator {
             inMaze[fy][fx] = true;
             addFrontierOdd(fx, fy, frontier, width, height);
         }
-        return new Maze(cells);
+        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
     }
 
     private void addFrontierOdd(int x, int y, List<int[]> frontier, int w, int h) {

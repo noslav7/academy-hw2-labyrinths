@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
+import academy.maze.dto.TerrainType;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,6 +44,7 @@ class KruskalGeneratorTest {
         }
         long pathCount = countPaths(c);
         softly.assertThat(pathCount).isGreaterThan(0);
+        softly.assertThat(hasSpecialTerrain(m)).isTrue();
         softly.assertAll();
     }
 
@@ -54,6 +56,7 @@ class KruskalGeneratorTest {
         Maze m1 = g1.generate(w, h);
         Maze m2 = g2.generate(w, h);
         assertThat(equalCells(m1.cells(), m2.cells())).isTrue();
+        assertThat(equalTerrain(m1.terrain(), m2.terrain())).isTrue();
     }
 
     private static long countPaths(CellType[][] c) {
@@ -69,6 +72,28 @@ class KruskalGeneratorTest {
         int h = a.length, w = a[0].length;
         for (int y = 0; y < h; y++) for (int x = 0; x < w; x++) if (a[y][x] != b[y][x]) return false;
         return true;
+    }
+
+    private static boolean equalTerrain(TerrainType[][] a, TerrainType[][] b) {
+        if (a.length != b.length) return false;
+        if (a.length == 0) return b.length == 0;
+        if (a[0].length != b[0].length) return false;
+        int h = a.length, w = a[0].length;
+        for (int y = 0; y < h; y++) for (int x = 0; x < w; x++) if (a[y][x] != b[y][x]) return false;
+        return true;
+    }
+
+    private static boolean hasSpecialTerrain(Maze m) {
+        TerrainType[][] terrain = m.terrain();
+        CellType[][] cells = m.cells();
+        for (int y = 0; y < terrain.length; y++) {
+            for (int x = 0; x < terrain[y].length; x++) {
+                if (cells[y][x] == CellType.PATH && terrain[y][x] != TerrainType.NORMAL) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
