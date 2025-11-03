@@ -1,11 +1,11 @@
 package academy.cli;
 
 import academy.maze.Generator;
-import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.impl.DepthFirstGenerator;
 import academy.maze.impl.KruskalGenerator;
 import academy.maze.impl.PrimGenerator;
+import academy.util.MazeRenderer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +29,9 @@ public class GenerateCommand implements Runnable {
     @Option(names = {"-o", "--output"})
     private File output;
 
+    @Option(names = "--unicode", description = "Render maze using Unicode pseudographics")
+    private boolean unicode;
+
     @Override
     public void run() {
         Generator generator = switch (algorithm.toLowerCase()) {
@@ -39,7 +42,8 @@ public class GenerateCommand implements Runnable {
         };
 
         Maze maze = generator.generate(width, height);
-        String text = renderWithBorder(maze);
+        MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
+        String text = MazeRenderer.renderMaze(maze, style, true);
 
         if (output != null) {
             try {
@@ -53,24 +57,6 @@ public class GenerateCommand implements Runnable {
         } else {
             System.out.print(text);
         }
-    }
-
-    private String renderWithBorder(Maze maze) {
-        int w = maze.cells()[0].length;
-        int h = maze.cells().length;
-        StringBuilder sb = new StringBuilder();
-        // top border
-        sb.append("#".repeat(w + 2)).append('\n');
-        for (int y = 0; y < h; y++) {
-            sb.append('#');
-            for (int x = 0; x < w; x++) {
-                sb.append(maze.cells()[y][x] == CellType.WALL ? '#' : ' ');
-            }
-            sb.append('#').append('\n');
-        }
-        // bottom border
-        sb.append("#".repeat(w + 2)).append('\n');
-        return sb.toString();
     }
 }
 

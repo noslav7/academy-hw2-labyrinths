@@ -32,10 +32,10 @@ public enum TerrainType {
 
     public static TerrainType fromChar(char c) {
         return switch (c) {
-            case '~' -> SAND;
-            case '^' -> SWAMP;
-            case '.' -> PAVEMENT;
-            default -> NORMAL; // ' ' и любые прочие символы считаем NORMAL
+            case '~', '░' -> SAND;
+            case '^', '▒' -> SWAMP;
+            case '.', '∙' -> PAVEMENT;
+            default -> NORMAL; // ' ', '+', '·' и любые прочие символы считаем NORMAL
         };
     }
 }

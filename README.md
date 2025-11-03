@@ -22,6 +22,8 @@
 ./run-local.sh solve --help
 ./run-local.sh generate -a dfs -w 10 -h 10 -o maze.txt
 ./run-local.sh solve -a astar -f tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 -o out.txt
+# Отрисовка Unicode:
+./run-local.sh solve -a astar -f tests/cases/4_check_maze_solving/maze.txt -s 1,1 -e 9,9 --unicode
 ```
 
 - В Docker:
@@ -48,7 +50,7 @@
 .\run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 -o out.txt
 ```
 
-- CMD (префикс не требуется):
+- CMD:
 
 ```cmd
 run-local.cmd --help
@@ -57,6 +59,8 @@ run-local.cmd generate --help
 run-local.cmd solve --help
 run-local.cmd generate -a dfs -w 10 -h 10 -o maze.txt
 run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 -o out.txt
+# Отрисовка Unicode:
+run-local.cmd solve -a astar -f tests\cases\4_check_maze_solving\maze.txt -s 1,1 -e 9,9 --unicode
 ```
 
 - В Docker:

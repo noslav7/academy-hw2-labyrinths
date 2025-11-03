@@ -24,7 +24,7 @@ public final class MazeIO {
                 String line = lines.get(y);
                 for (int x = 0; x < width; x++) {
                     char c = line.charAt(x);
-                    if (c == '#') {
+                    if (isWallChar(c)) {
                         cells[y][x] = CellType.WALL;
                         terrain[y][x] = TerrainType.NORMAL;
                     } else {
@@ -37,6 +37,14 @@ public final class MazeIO {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static boolean isWallChar(char c) {
+        return switch (c) {
+            case '#', '█', '┏', '┓', '┗', '┛', '┳', '┻', '┯', '┷', '┠', '┨', '┝', '┥', '┞', '┟', '┢', '┡', '┤', '├', '┐', '┌', '┘', '└',
+                    '│', '┃', '─', '━' -> true;
+            default -> false;
+        };
     }
 
     public static void write(File output, String text) {

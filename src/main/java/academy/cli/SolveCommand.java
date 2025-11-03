@@ -34,6 +34,9 @@ public class SolveCommand implements Runnable {
     @Option(names = {"-o", "--output"})
     private File output;
 
+    @Option(names = "--unicode", description = "Render solution using Unicode pseudographics")
+    private boolean unicode;
+
     @Override
     public void run() {
         Point start = PointParser.parseOrExit(startStr);
@@ -71,7 +74,8 @@ public class SolveCommand implements Runnable {
         };
 
         Path path = solver.solve(maze, start, end);
-        String text = MazeRenderer.renderWithPath(maze, path, start, end);
+        MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
+        String text = MazeRenderer.renderWithPath(maze, path, start, end, style);
 
         if (output != null) {
             MazeIO.write(output, text);

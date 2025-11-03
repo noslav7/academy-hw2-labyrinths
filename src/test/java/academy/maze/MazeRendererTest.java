@@ -45,6 +45,36 @@ class MazeRendererTest {
         softly.assertThat(lines2[2].charAt(2)).isEqualTo('.');
         softly.assertAll();
     }
+
+    @Test
+    void whenUnicodeStyleEnabled_thenUnicodeGlyphsUsed() {
+        CellType[][] cells = {
+            {CellType.WALL, CellType.PATH},
+            {CellType.PATH, CellType.PATH}
+        };
+        TerrainType[][] terrain = {
+            {TerrainType.NORMAL, TerrainType.PAVEMENT},
+            {TerrainType.SAND, TerrainType.SWAMP}
+        };
+        Maze maze = new Maze(cells, terrain);
+
+        Path path = new Path(new Point[] {new Point(1, 0), new Point(1, 1)});
+        String rendered = MazeRenderer.renderWithPath(maze, path, new Point(1, 0), new Point(1, 1), MazeRenderer.GlyphStyle.UNICODE);
+
+        String[] lines = rendered.split("\n");
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(lines[0].charAt(0)).isEqualTo('█');
+        softly.assertThat(lines[0].charAt(1)).isEqualTo('◉');
+        softly.assertThat(lines[1].charAt(0)).isEqualTo('░');
+        softly.assertThat(lines[1].charAt(1)).isEqualTo('◎');
+
+        String withBorder = MazeRenderer.renderMaze(maze, MazeRenderer.GlyphStyle.UNICODE, true);
+        String[] bordered = withBorder.split("\n");
+        softly.assertThat(bordered[0]).startsWith("┏");
+        softly.assertThat(bordered[1]).startsWith("┃█");
+        softly.assertThat(bordered[bordered.length - 1]).startsWith("┗");
+        softly.assertAll();
+    }
 }
 
 
