@@ -3,7 +3,7 @@ package academy.maze.dto;
 /**
  * Лабиринт.
  *
- * @param cells   Массив ячеек лабиринта (WALL или PATH).
+ * @param cells Массив ячеек лабиринта (WALL или PATH).
  * @param terrain Массив поверхностей для проходимых клеток. Для стен значение игнорируется.
  */
 public record Maze(CellType[][] cells, TerrainType[][] terrain) {

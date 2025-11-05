@@ -3,12 +3,12 @@ package academy.maze.impl;
 import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
+import academy.maze.util.Mazes;
+import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import academy.maze.util.Mazes;
-import academy.maze.util.TerrainRandomizer;
 
 public class DepthFirstGenerator implements Generator {
     private final Random random;
@@ -21,6 +21,7 @@ public class DepthFirstGenerator implements Generator {
     DepthFirstGenerator(Random random) {
         this.random = random;
     }
+
     @Override
     public Maze generate(int width, int height) {
         if (width <= 0 || height <= 0) throw new IllegalArgumentException("Invalid size");
@@ -40,13 +41,7 @@ public class DepthFirstGenerator implements Generator {
 
     // Recursive backtracker over a grid of "rooms" located at odd coordinates.
     private void carveRooms(
-            int x,
-            int y,
-            CellType[][] cells,
-            boolean[][] visitedRooms,
-            Random rnd,
-            int width,
-            int height) {
+            int x, int y, CellType[][] cells, boolean[][] visitedRooms, Random rnd, int width, int height) {
         visitedRooms[y][x] = true;
         cells[y][x] = CellType.PATH;
 
@@ -70,5 +65,3 @@ public class DepthFirstGenerator implements Generator {
         }
     }
 }
-
-

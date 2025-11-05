@@ -47,5 +47,3 @@ public final class TerrainRandomizer {
         return TerrainType.PAVEMENT;
     }
 }
-
-

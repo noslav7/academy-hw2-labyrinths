@@ -1,13 +1,12 @@
 package academy.maze.impl;
 
-import org.assertj.core.api.SoftAssertions;
-
 import academy.maze.MazesTestUtils;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
 import academy.maze.dto.TerrainType;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 class WeightedSolversTest {
@@ -75,5 +74,3 @@ class WeightedSolversTest {
         return sum;
     }
 }
-
-

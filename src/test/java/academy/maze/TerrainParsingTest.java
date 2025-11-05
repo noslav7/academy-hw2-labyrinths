@@ -1,7 +1,6 @@
 package academy.maze;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.assertj.core.api.SoftAssertions;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
@@ -10,14 +9,14 @@ import academy.util.MazeIO;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 class TerrainParsingTest {
 
     @Test
     void givenMixedSymbols_whenRead_thenTerrainAndCellsParsedCorrectly() throws Exception {
-        String content = "#.~\n" +
-                " ^ \n";
+        String content = "#.~\n" + " ^ \n";
         Path tmp = Files.createTempFile("maze-terrain-", ".txt");
         Files.writeString(tmp, content);
 
@@ -48,8 +47,7 @@ class TerrainParsingTest {
 
     @Test
     void givenUnknownSymbols_whenRead_thenTreatedAsNormal() throws Exception {
-        String content = " a \n" +
-                " b \n";
+        String content = " a \n" + " b \n";
         Path tmp = Files.createTempFile("maze-terrain-unk-", ".txt");
         Files.writeString(tmp, content);
         Maze m = MazeIO.read(new File(tmp.toString()));
@@ -62,12 +60,8 @@ class TerrainParsingTest {
 
     @Test
     void givenDefaultConstructor_whenCostAt_thenNormalCostOne() {
-        CellType[][] cells = new CellType[][] {
-                {CellType.PATH}
-        };
+        CellType[][] cells = new CellType[][] {{CellType.PATH}};
         Maze m = new Maze(cells);
         assertThat(m.costAt(0, 0)).isEqualTo(1);
     }
 }
-
-

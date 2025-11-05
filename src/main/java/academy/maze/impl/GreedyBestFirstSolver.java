@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-/**
- * Жадный поиск по наилучшей эвристике (Manhattan). Не учитывает веса поверхностей.
- */
+/** Жадный поиск по наилучшей эвристике (Manhattan). Не учитывает веса поверхностей. */
 public class GreedyBestFirstSolver implements Solver {
     @Override
     public Path solve(Maze maze, Point start, Point end) {
@@ -63,9 +61,9 @@ public class GreedyBestFirstSolver implements Solver {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
-    private int key(int x, int y, int w) { return y * w + x; }
+    private int key(int x, int y, int w) {
+        return y * w + x;
+    }
 
     private static final int[][] DIRS = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 }
-
-

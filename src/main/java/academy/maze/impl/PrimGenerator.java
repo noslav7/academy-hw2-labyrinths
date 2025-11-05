@@ -3,11 +3,11 @@ package academy.maze.impl;
 import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
+import academy.maze.util.Mazes;
+import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import academy.maze.util.Mazes;
-import academy.maze.util.TerrainRandomizer;
 
 public class PrimGenerator implements Generator {
     private final Random random;
@@ -20,6 +20,7 @@ public class PrimGenerator implements Generator {
     PrimGenerator(Random random) {
         this.random = random;
     }
+
     @Override
     public Maze generate(int width, int height) {
         if (width <= 0 || height <= 0) throw new IllegalArgumentException("Invalid size");
@@ -75,5 +76,3 @@ public class PrimGenerator implements Generator {
         if (y < h - 2) frontier.add(new int[] {x, y + 2});
     }
 }
-
-

@@ -13,18 +13,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 class DijkstraSolverTest {
 
     @ParameterizedTest(name = "[{index}] start={0},{1} end={2},{3} => len={4}")
-    @CsvSource({
-        "1,1, 3,3, 4",
-        "1,1, 1,1, 0"
-    })
-    void givenSimpleMaze_whenSolveDijkstra_thenExpectedLengthIsAsSpecified(int sx, int sy, int ex, int ey, int expectedLen) {
-        Maze m = MazesTestUtils.mazeFrom(
-            "#####",
-            "#   #",
-            "# # #",
-            "#   #",
-            "#####"
-        );
+    @CsvSource({"1,1, 3,3, 4", "1,1, 1,1, 0"})
+    void givenSimpleMaze_whenSolveDijkstra_thenExpectedLengthIsAsSpecified(
+            int sx, int sy, int ex, int ey, int expectedLen) {
+        Maze m = MazesTestUtils.mazeFrom("#####", "#   #", "# # #", "#   #", "#####");
         Point start = new Point(sx, sy);
         Point end = new Point(ex, ey);
         DijkstraSolver dijkstra = new DijkstraSolver();
@@ -35,11 +27,7 @@ class DijkstraSolverTest {
 
     @Test
     void givenBlockedMaze_whenSolveDijkstra_thenPathIsEmpty() {
-        Maze m = MazesTestUtils.mazeFrom(
-            "#####",
-            "# # #",
-            "#####"
-        );
+        Maze m = MazesTestUtils.mazeFrom("#####", "# # #", "#####");
         Point start = new Point(1, 1);
         Point end = new Point(3, 1);
         DijkstraSolver dijkstra = new DijkstraSolver();
@@ -49,11 +37,7 @@ class DijkstraSolverTest {
 
     @Test
     void givenStartEqualsEnd_whenSolveDijkstra_thenSinglePointPath() {
-        Maze m = MazesTestUtils.mazeFrom(
-            "#####",
-            "#   #",
-            "#####"
-        );
+        Maze m = MazesTestUtils.mazeFrom("#####", "#   #", "#####");
         Point start = new Point(2, 1);
         DijkstraSolver dijkstra = new DijkstraSolver();
         Path p = dijkstra.solve(m, start, start);

@@ -19,16 +19,24 @@ import picocli.CommandLine.Option;
 @Command(name = "solve", description = "Solve a maze with specified algorithm and points.")
 public class SolveCommand implements Runnable {
 
-    @Option(names = {"-a", "--algorithm"}, required = true)
+    @Option(
+            names = {"-a", "--algorithm"},
+            required = true)
     private String algorithm;
 
-    @Option(names = {"-f", "--file"}, required = true)
+    @Option(
+            names = {"-f", "--file"},
+            required = true)
     private File mazeFile;
 
-    @Option(names = {"-s", "--start"}, required = true)
+    @Option(
+            names = {"-s", "--start"},
+            required = true)
     private String startStr;
 
-    @Option(names = {"-e", "--end"}, required = true)
+    @Option(
+            names = {"-e", "--end"},
+            required = true)
     private String endStr;
 
     @Option(names = {"-o", "--output"})
@@ -47,31 +55,34 @@ public class SolveCommand implements Runnable {
         int height = maze.cells().length;
 
         if (!inBounds(start, width, height)) {
-            System.err.println(
-                    "Start point is out of bounds: " + start + ", expected within [0," + (width - 1) + "]x[0," + (height - 1) + "]");
+            System.err.println("Start point is out of bounds: " + start + ", expected within [0," + (width - 1)
+                    + "]x[0," + (height - 1) + "]");
             System.exit(2);
         }
         if (!inBounds(end, width, height)) {
-            System.err.println(
-                    "End point is out of bounds: " + end + ", expected within [0," + (width - 1) + "]x[0," + (height - 1) + "]");
+            System.err.println("End point is out of bounds: " + end + ", expected within [0," + (width - 1) + "]x[0,"
+                    + (height - 1) + "]");
             System.exit(2);
         }
         if (maze.cells()[start.y()][start.x()] == CellType.WALL) {
-            System.err.println("Start point is on a wall: " + start + ". Choose coordinates where the maze has a space ' '.");
+            System.err.println(
+                    "Start point is on a wall: " + start + ". Choose coordinates where the maze has a space ' '.");
             System.exit(2);
         }
         if (maze.cells()[end.y()][end.x()] == CellType.WALL) {
-            System.err.println("End point is on a wall: " + end + ". Choose coordinates where the maze has a space ' '.");
+            System.err.println(
+                    "End point is on a wall: " + end + ". Choose coordinates where the maze has a space ' '.");
             System.exit(2);
         }
 
-        Solver solver = switch (algorithm.toLowerCase()) {
-            case "astar", "a-star", "a*" -> new AStarSolver();
-            case "dijkstra" -> new DijkstraSolver();
-            case "bfs" -> new BreadthFirstSolver();
-            case "greedy", "gbfs" -> new GreedyBestFirstSolver();
-            default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
-        };
+        Solver solver =
+                switch (algorithm.toLowerCase()) {
+                    case "astar", "a-star", "a*" -> new AStarSolver();
+                    case "dijkstra" -> new DijkstraSolver();
+                    case "bfs" -> new BreadthFirstSolver();
+                    case "greedy", "gbfs" -> new GreedyBestFirstSolver();
+                    default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
+                };
 
         Path path = solver.solve(maze, start, end);
         MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
@@ -87,7 +98,4 @@ public class SolveCommand implements Runnable {
     private boolean inBounds(Point p, int w, int h) {
         return p.x() >= 0 && p.x() < w && p.y() >= 0 && p.y() < h;
     }
-
 }
-
-

@@ -17,5 +17,3 @@ public final class Mazes {
         return new Maze(cells, TerrainRandomizer.randomize(cells, random));
     }
 }
-
-

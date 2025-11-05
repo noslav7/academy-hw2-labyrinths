@@ -1,13 +1,13 @@
 package academy.maze.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.assertj.core.api.SoftAssertions;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.TerrainType;
 import java.util.Random;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,11 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class KruskalGeneratorTest {
 
     @ParameterizedTest(name = "[{index}] invalid size w={0}, h={1}")
-    @CsvSource({
-            "0,5",
-            "5,0",
-            "-1,3"
-    })
+    @CsvSource({"0,5", "5,0", "-1,3"})
     void givenInvalidSize_whenGenerate_thenThrowIllegalArgument(int w, int h) {
         KruskalGenerator gen = new KruskalGenerator(new Random(1));
         assertThatThrownBy(() -> gen.generate(w, h)).isInstanceOf(IllegalArgumentException.class);
@@ -96,5 +92,3 @@ class KruskalGeneratorTest {
         return false;
     }
 }
-
-

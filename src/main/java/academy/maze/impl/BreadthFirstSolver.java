@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Поиск в ширину (не учитывает веса поверхности, все шаги равны по стоимости).
- */
+/** Поиск в ширину (не учитывает веса поверхности, все шаги равны по стоимости). */
 public class BreadthFirstSolver implements Solver {
     @Override
     public Path solve(Maze maze, Point start, Point end) {
@@ -58,9 +56,9 @@ public class BreadthFirstSolver implements Solver {
         return new Path(pts);
     }
 
-    private int key(int x, int y, int w) { return y * w + x; }
+    private int key(int x, int y, int w) {
+        return y * w + x;
+    }
 
     private static final int[][] DIRS = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 }
-
-

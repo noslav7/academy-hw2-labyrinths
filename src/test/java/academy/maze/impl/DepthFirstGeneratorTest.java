@@ -16,21 +16,14 @@ import org.junit.jupiter.params.provider.CsvSource;
 class DepthFirstGeneratorTest {
 
     @ParameterizedTest(name = "[{index}] invalid size w={0}, h={1}")
-    @CsvSource({
-        "0,5",
-        "5,0",
-        "-1,3"
-    })
+    @CsvSource({"0,5", "5,0", "-1,3"})
     void givenInvalidSize_whenGenerate_thenThrowIllegalArgument(int w, int h) {
         DepthFirstGenerator gen = new DepthFirstGenerator(new Random(1));
         assertThatThrownBy(() -> gen.generate(w, h)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest(name = "[{index}] small grid w={0}, h={1} opens all")
-    @CsvSource({
-        "1,1",
-        "2,2"
-    })
+    @CsvSource({"1,1", "2,2"})
     void givenSmallGrid_whenGenerate_thenAllCellsArePath(int w, int h) {
         DepthFirstGenerator gen = new DepthFirstGenerator(new Random(1));
         Maze m = gen.generate(w, h);
@@ -155,5 +148,3 @@ class DepthFirstGeneratorTest {
         return new Point(0, 0);
     }
 }
-
-

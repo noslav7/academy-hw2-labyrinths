@@ -29,13 +29,19 @@ public class Application implements Runnable {
             new ObjectMapper(new YAMLFactory()).findAndRegisterModules().reader();
 
     // Hidden legacy/demo options preserved but not shown in help
-    @Option(names = {"-s", "--font-size"}, description = "Font size", hidden = true)
+    @Option(
+            names = {"-s", "--font-size"},
+            description = "Font size",
+            hidden = true)
     int fontSize;
 
     @Parameters(paramLabel = "<word>", description = "Words to be processed.", hidden = true)
     private String[] words;
 
-    @Option(names = {"-c", "--config"}, description = "Path to YAML config file", hidden = true)
+    @Option(
+            names = {"-c", "--config"},
+            description = "Path to YAML config file",
+            hidden = true)
     private File configPath;
 
     public static void main(String[] args) {
@@ -57,7 +63,8 @@ public class Application implements Runnable {
     }
 
     private AppConfig loadConfig() {
-        if (configPath == null) return new AppConfig(fontSize, words == null ? Collections.emptyList() : Arrays.asList(words));
+        if (configPath == null)
+            return new AppConfig(fontSize, words == null ? Collections.emptyList() : Arrays.asList(words));
         try {
             return YAML_READER.readValue(configPath, AppConfig.class);
         } catch (IOException e) {

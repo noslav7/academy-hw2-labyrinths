@@ -10,15 +10,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Генерация лабиринта алгоритмом Краскала по сетке «комнат» на нечётных координатах.
- */
+/** Генерация лабиринта алгоритмом Краскала по сетке «комнат» на нечётных координатах. */
 public class KruskalGenerator implements Generator {
     private final Random random;
 
-    public KruskalGenerator() { this(new Random()); }
+    public KruskalGenerator() {
+        this(new Random());
+    }
 
-    KruskalGenerator(Random random) { this.random = random; }
+    KruskalGenerator(Random random) {
+        this.random = random;
+    }
 
     @Override
     public Maze generate(int width, int height) {
@@ -69,15 +71,22 @@ public class KruskalGenerator implements Generator {
         return new Maze(cells, TerrainRandomizer.randomize(cells, random));
     }
 
-    private int roomIndex(int x, int y, int rw) { return (y - 1) / 2 * rw + (x - 1) / 2; }
+    private int roomIndex(int x, int y, int rw) {
+        return (y - 1) / 2 * rw + (x - 1) / 2;
+    }
 
-    private int find(int x, int[] p) { return p[x] == x ? x : (p[x] = find(p[x], p)); }
+    private int find(int x, int[] p) {
+        return p[x] == x ? x : (p[x] = find(p[x], p));
+    }
 
     private void union(int a, int b, int[] p, int[] r) {
         int ra = find(a, p), rb = find(b, p);
         if (ra == rb) return;
-        if (r[ra] < r[rb]) p[ra] = rb; else if (r[ra] > r[rb]) p[rb] = ra; else { p[rb] = ra; r[ra]++; }
+        if (r[ra] < r[rb]) p[ra] = rb;
+        else if (r[ra] > r[rb]) p[rb] = ra;
+        else {
+            p[rb] = ra;
+            r[ra]++;
+        }
     }
 }
-
-

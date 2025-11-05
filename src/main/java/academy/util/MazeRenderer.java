@@ -78,9 +78,10 @@ public final class MazeRenderer {
                 if (maze.cells()[y][x] == CellType.WALL) {
                     out[y][x] = style == GlyphStyle.ASCII ? '#' : '█';
                 } else {
-                    TerrainType type = terrain != null && terrain.length > y && terrain[y] != null && terrain[y].length > x
-                            ? terrain[y][x]
-                            : TerrainType.NORMAL;
+                    TerrainType type =
+                            terrain != null && terrain.length > y && terrain[y] != null && terrain[y].length > x
+                                    ? terrain[y][x]
+                                    : TerrainType.NORMAL;
                     out[y][x] = terrainSymbol(type, style);
                 }
             }
@@ -114,6 +115,3 @@ public final class MazeRenderer {
         return sb.toString();
     }
 }
-
-
-

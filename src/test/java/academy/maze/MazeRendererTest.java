@@ -1,13 +1,12 @@
 package academy.maze;
 
-import org.assertj.core.api.SoftAssertions;
-
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
 import academy.maze.dto.TerrainType;
 import academy.util.MazeRenderer;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 class MazeRendererTest {
@@ -40,7 +39,8 @@ class MazeRendererTest {
         // In this case, end at (1,1) is 'X', so check another '.' placement
         // Set another pavement and ensure it's rendered
         terrain[2][2] = TerrainType.PAVEMENT;
-        String rendered2 = MazeRenderer.renderWithPath(new Maze(cells, terrain), new Path(new Point[0]), new Point(0, 0), new Point(1, 1));
+        String rendered2 = MazeRenderer.renderWithPath(
+                new Maze(cells, terrain), new Path(new Point[0]), new Point(0, 0), new Point(1, 1));
         String[] lines2 = rendered2.split("\n");
         softly.assertThat(lines2[2].charAt(2)).isEqualTo('.');
         softly.assertAll();
@@ -59,7 +59,8 @@ class MazeRendererTest {
         Maze maze = new Maze(cells, terrain);
 
         Path path = new Path(new Point[] {new Point(1, 0), new Point(1, 1)});
-        String rendered = MazeRenderer.renderWithPath(maze, path, new Point(1, 0), new Point(1, 1), MazeRenderer.GlyphStyle.UNICODE);
+        String rendered = MazeRenderer.renderWithPath(
+                maze, path, new Point(1, 0), new Point(1, 1), MazeRenderer.GlyphStyle.UNICODE);
 
         String[] lines = rendered.split("\n");
         SoftAssertions softly = new SoftAssertions();
@@ -76,5 +77,3 @@ class MazeRendererTest {
         softly.assertAll();
     }
 }
-
-

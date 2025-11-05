@@ -20,16 +20,15 @@ public class AStarSolver implements Solver {
         if (h == 0) return new Path(new Point[0]);
         int w = maze.cells()[0].length;
 
-        PriorityQueue<int[]> open =
-                new PriorityQueue<>((a, b) -> {
-                    int cf = Integer.compare(a[2], b[2]);
-                    if (cf != 0) return cf;
-                    int ch = Integer.compare(a[3], b[3]);
-                    if (ch != 0) return ch;
-                    int cy = Integer.compare(a[1], b[1]);
-                    if (cy != 0) return cy;
-                    return Integer.compare(a[0], b[0]);
-                });
+        PriorityQueue<int[]> open = new PriorityQueue<>((a, b) -> {
+            int cf = Integer.compare(a[2], b[2]);
+            if (cf != 0) return cf;
+            int ch = Integer.compare(a[3], b[3]);
+            if (ch != 0) return ch;
+            int cy = Integer.compare(a[1], b[1]);
+            if (cy != 0) return cy;
+            return Integer.compare(a[0], b[0]);
+        });
         Map<Integer, Integer> came = new HashMap<>();
         Map<Integer, Integer> g = new HashMap<>();
         Set<Integer> closed = new HashSet<>();
@@ -37,8 +36,12 @@ public class AStarSolver implements Solver {
         int sKey = key(start.x(), start.y(), w);
         int eKey = key(end.x(), end.y(), w);
         g.put(sKey, 0);
-        open.add(new int[] {start.x(), start.y(), heuristic(start.x(), start.y(), end.x(), end.y()),
-                heuristic(start.x(), start.y(), end.x(), end.y())});
+        open.add(new int[] {
+            start.x(),
+            start.y(),
+            heuristic(start.x(), start.y(), end.x(), end.y()),
+            heuristic(start.x(), start.y(), end.x(), end.y())
+        });
 
         while (!open.isEmpty()) {
             int[] cur = open.poll();
@@ -89,5 +92,3 @@ public class AStarSolver implements Solver {
 
     private static final int[][] DIRS = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 }
-
-

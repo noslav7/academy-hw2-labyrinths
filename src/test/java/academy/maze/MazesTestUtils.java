@@ -26,8 +26,12 @@ public final class MazesTestUtils {
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(path.points()).as("path must not be empty").isNotEmpty();
             if (path.points().length > 0) {
-                softly.assertThat(path.points()[0]).as("first point equals start").isEqualTo(start);
-                softly.assertThat(path.points()[path.points().length - 1]).as("last point equals end").isEqualTo(end);
+                softly.assertThat(path.points()[0])
+                        .as("first point equals start")
+                        .isEqualTo(start);
+                softly.assertThat(path.points()[path.points().length - 1])
+                        .as("last point equals end")
+                        .isEqualTo(end);
             }
             for (Point pt : path.points()) {
                 softly.assertThat(c[pt.y()][pt.x()]).as("point %s is PATH", pt).isEqualTo(CellType.PATH);
@@ -35,10 +39,10 @@ public final class MazesTestUtils {
             for (int i = 1; i < path.points().length; i++) {
                 int dx = Math.abs(path.points()[i].x() - path.points()[i - 1].x());
                 int dy = Math.abs(path.points()[i].y() - path.points()[i - 1].y());
-                softly.assertThat(dx + dy).as("step %s->%s is 4-neighbor", path.points()[i - 1], path.points()[i]).isEqualTo(1);
+                softly.assertThat(dx + dy)
+                        .as("step %s->%s is 4-neighbor", path.points()[i - 1], path.points()[i])
+                        .isEqualTo(1);
             }
         });
     }
 }
-
-

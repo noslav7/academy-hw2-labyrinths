@@ -16,14 +16,20 @@ import picocli.CommandLine.Option;
 @Command(name = "generate", description = "Generate a maze with specified algorithm and dimensions.")
 public class GenerateCommand implements Runnable {
 
-    @Option(names = {"-a", "--algorithm"}, required = true)
+    @Option(
+            names = {"-a", "--algorithm"},
+            required = true)
     private String algorithm;
 
-    @Option(names = {"-w", "--width"}, required = true)
+    @Option(
+            names = {"-w", "--width"},
+            required = true)
     private int width;
 
     // Note: short name -h is intended to be height for this subcommand
-    @Option(names = {"-h", "--height"}, required = true)
+    @Option(
+            names = {"-h", "--height"},
+            required = true)
     private int height;
 
     @Option(names = {"-o", "--output"})
@@ -34,12 +40,13 @@ public class GenerateCommand implements Runnable {
 
     @Override
     public void run() {
-        Generator generator = switch (algorithm.toLowerCase()) {
-            case "dfs" -> new DepthFirstGenerator();
-            case "prim" -> new PrimGenerator();
-            case "kruskal" -> new KruskalGenerator();
-            default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
-        };
+        Generator generator =
+                switch (algorithm.toLowerCase()) {
+                    case "dfs" -> new DepthFirstGenerator();
+                    case "prim" -> new PrimGenerator();
+                    case "kruskal" -> new KruskalGenerator();
+                    default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
+                };
 
         Maze maze = generator.generate(width, height);
         MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
@@ -59,5 +66,3 @@ public class GenerateCommand implements Runnable {
         }
     }
 }
-
-

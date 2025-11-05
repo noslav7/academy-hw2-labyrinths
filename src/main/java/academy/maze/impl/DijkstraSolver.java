@@ -60,9 +60,9 @@ public class DijkstraSolver implements Solver {
         return new Path(pts);
     }
 
-    private int key(int x, int y, int w) { return y * w + x; }
+    private int key(int x, int y, int w) {
+        return y * w + x;
+    }
 
     private static final int[][] DIRS = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 }
-
-
