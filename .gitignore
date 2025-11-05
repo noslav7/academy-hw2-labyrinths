@@ -35,3 +35,4 @@ out_astar.txt
 out_dijkstra.txt
 maze_kruskal.txt
 out_greedy.txt
+.vscode/settings.json
