@@ -1,42 +1,32 @@
 package academy.maze.impl;
 
-import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
-import academy.maze.util.Mazes;
 import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /** Генерация лабиринта алгоритмом Краскала по сетке «комнат» на нечётных координатах. */
-public class KruskalGenerator implements Generator {
-    private final Random random;
+public class KruskalGenerator extends AbstractRandomizedGenerator {
+    public KruskalGenerator() {}
 
-    public KruskalGenerator() {
-        this(new Random());
-    }
-
-    KruskalGenerator(Random random) {
-        this.random = random;
+    KruskalGenerator(java.util.Random random) {
+        super(random);
     }
 
     @Override
     public Maze generate(int width, int height) {
-        if (width <= 0 || height <= 0) throw new IllegalArgumentException("Invalid size");
-        CellType[][] cells = new CellType[height][width];
-        for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.WALL;
-
-        if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height, random);
+        validateDimensions(width, height);
+        Maze small = smallMazeOrNull(width, height);
+        if (small != null) {
+            return small;
         }
+        CellType[][] cells = newWallGrid(width, height);
 
         // список «комнат» на нечётных координатах
-        List<int[]> rooms = new ArrayList<>();
         for (int y = 1; y < height; y += 2) {
             for (int x = 1; x < width; x += 2) {
-                rooms.add(new int[] {x, y});
                 cells[y][x] = CellType.PATH;
             }
         }

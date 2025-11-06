@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -54,8 +55,9 @@ public class GenerateCommand implements Runnable {
 
         if (output != null) {
             try {
-                if (output.getParentFile() != null) {
-                    output.getParentFile().mkdirs();
+                Path parent = output.toPath().getParent();
+                if (parent != null) {
+                    Files.createDirectories(parent);
                 }
                 Files.writeString(output.toPath(), text, StandardCharsets.UTF_8);
             } catch (IOException e) {

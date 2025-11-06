@@ -5,10 +5,9 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
-import java.util.ArrayList;
+import academy.maze.util.PathUtils;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -33,8 +32,8 @@ public class AStarSolver implements Solver {
         Map<Integer, Integer> g = new HashMap<>();
         Set<Integer> closed = new HashSet<>();
 
-        int sKey = key(start.x(), start.y(), w);
-        int eKey = key(end.x(), end.y(), w);
+        int sKey = PathUtils.key(start.x(), start.y(), w);
+        int eKey = PathUtils.key(end.x(), end.y(), w);
         g.put(sKey, 0);
         open.add(new int[] {
             start.x(),
@@ -46,16 +45,16 @@ public class AStarSolver implements Solver {
         while (!open.isEmpty()) {
             int[] cur = open.poll();
             int cx = cur[0], cy = cur[1];
-            int cKey = key(cx, cy, w);
+            int cKey = PathUtils.key(cx, cy, w);
             if (cKey == eKey) {
-                return reconstruct(came, cKey, w);
+                return PathUtils.reconstructPath(came, cKey, w);
             }
             if (!closed.add(cKey)) continue;
             for (int[] d : DIRS) {
                 int nx = cx + d[0], ny = cy + d[1];
                 if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
                 if (maze.cells()[ny][nx] == CellType.WALL) continue;
-                int nKey = key(nx, ny, w);
+                int nKey = PathUtils.key(nx, ny, w);
                 int tentative = g.getOrDefault(cKey, Integer.MAX_VALUE / 4) + maze.costAt(nx, ny);
                 if (tentative < g.getOrDefault(nKey, Integer.MAX_VALUE / 4)) {
                     came.put(nKey, cKey);
@@ -69,25 +68,8 @@ public class AStarSolver implements Solver {
         return new Path(new Point[0]);
     }
 
-    private Path reconstruct(Map<Integer, Integer> came, int endKey, int w) {
-        List<Point> rev = new ArrayList<>();
-        Integer cur = endKey;
-        while (cur != null) {
-            rev.add(new Point(cur % w, cur / w));
-            cur = came.get(cur);
-        }
-        int n = rev.size();
-        Point[] pts = new Point[n];
-        for (int i = 0; i < n; i++) pts[i] = rev.get(n - 1 - i);
-        return new Path(pts);
-    }
-
     private int heuristic(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    private int key(int x, int y, int w) {
-        return y * w + x;
     }
 
     private static final int[][] DIRS = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};

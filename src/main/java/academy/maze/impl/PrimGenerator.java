@@ -1,36 +1,27 @@
 package academy.maze.impl;
 
-import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
-import academy.maze.util.Mazes;
 import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class PrimGenerator implements Generator {
-    private final Random random;
-
-    public PrimGenerator() {
-        this(new Random());
-    }
+public class PrimGenerator extends AbstractRandomizedGenerator {
+    public PrimGenerator() {}
 
     // package-private for tests
-    PrimGenerator(Random random) {
-        this.random = random;
+    PrimGenerator(java.util.Random random) {
+        super(random);
     }
 
     @Override
     public Maze generate(int width, int height) {
-        if (width <= 0 || height <= 0) throw new IllegalArgumentException("Invalid size");
-        CellType[][] cells = new CellType[height][width];
-        for (int y = 0; y < height; y++) for (int x = 0; x < width; x++) cells[y][x] = CellType.WALL;
-
-        // For very small mazes, just open everything inside
-        if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height, random);
+        validateDimensions(width, height);
+        Maze small = smallMazeOrNull(width, height);
+        if (small != null) {
+            return small;
         }
+        CellType[][] cells = newWallGrid(width, height);
 
         boolean[][] inMaze = new boolean[height][width];
         int sx = 1, sy = 1; // start on odd cell
@@ -57,8 +48,8 @@ public class PrimGenerator implements Generator {
             int nx = n[0], ny = n[1];
 
             // open the wall between (fx, fy) and (nx, ny)
-            int bx = (fx + nx) / 2;
-            int by = (fy + ny) / 2;
+            int bx = fx + ((nx - fx) / 2);
+            int by = fy + ((ny - fy) / 2);
             cells[by][bx] = CellType.PATH;
 
             // open the frontier cell and mark it in the maze

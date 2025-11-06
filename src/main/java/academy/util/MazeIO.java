@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public final class MazeIO {
@@ -75,7 +76,10 @@ public final class MazeIO {
 
     public static void write(File output, String text) {
         try {
-            if (output.getParentFile() != null) output.getParentFile().mkdirs();
+            Path parent = output.toPath().getParent();
+            if (parent != null) {
+                Files.createDirectories(parent);
+            }
             Files.writeString(output.toPath(), text, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -5,9 +5,8 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
-import java.util.ArrayList;
+import academy.maze.util.PathUtils;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
@@ -39,29 +38,13 @@ public class DijkstraSolver implements Solver {
                 int nd = dist[cy][cx] + maze.costAt(nx, ny);
                 if (nd < dist[ny][nx]) {
                     dist[ny][nx] = nd;
-                    prev.put(key(nx, ny, w), key(cx, cy, w));
+                    prev.put(PathUtils.key(nx, ny, w), PathUtils.key(cx, cy, w));
                     pq.add(new int[] {nx, ny, nd});
                 }
             }
         }
         if (dist[end.y()][end.x()] >= Integer.MAX_VALUE / 8) return new Path(new Point[0]);
-        // reconstruct
-        List<Point> rev = new ArrayList<>();
-        int k = key(end.x(), end.y(), w);
-        while (true) {
-            rev.add(new Point(k % w, k / w));
-            Integer p = prev.get(k);
-            if (p == null) break;
-            k = p;
-        }
-        int n = rev.size();
-        Point[] pts = new Point[n];
-        for (int i = 0; i < n; i++) pts[i] = rev.get(n - 1 - i);
-        return new Path(pts);
-    }
-
-    private int key(int x, int y, int w) {
-        return y * w + x;
+        return PathUtils.reconstructPath(prev, PathUtils.key(end.x(), end.y(), w), w);
     }
 
     private static final int[][] DIRS = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
