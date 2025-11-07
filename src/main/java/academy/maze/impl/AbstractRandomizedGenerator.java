@@ -25,7 +25,7 @@ abstract class AbstractRandomizedGenerator implements Generator {
 
     protected Maze smallMazeOrNull(int width, int height) {
         if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height, random);
+            return Mazes.openAll(width, height);
         }
         return null;
     }

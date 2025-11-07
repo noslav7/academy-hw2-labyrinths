@@ -36,3 +36,9 @@ out_dijkstra.txt
 maze_kruskal.txt
 out_greedy.txt
 .vscode/settings.json
+maze_dfs_unicode.txt
+maze_kruskal_unicode.txt
+maze_prim_unicode.txt
+out_astar_unicode.txt
+out_dijkstra_unicode.txt
+out_greedy_unicode.txt

@@ -2,7 +2,6 @@ package academy.maze.impl;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
-import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class PrimGenerator extends AbstractRandomizedGenerator {
             inMaze[fy][fx] = true;
             addFrontierOdd(fx, fy, frontier, width, height);
         }
-        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
+        return new Maze(cells);
     }
 
     private void addFrontierOdd(int x, int y, List<int[]> frontier, int w, int h) {

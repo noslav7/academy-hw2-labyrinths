@@ -2,7 +2,6 @@ package academy.maze.impl;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
-import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +26,7 @@ public class DepthFirstGenerator extends AbstractRandomizedGenerator {
         boolean[][] visitedRooms = new boolean[height][width];
         // Start from the first odd cell inside the border
         carveRooms(1, 1, cells, visitedRooms, width, height);
-        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
+        return new Maze(cells);
     }
 
     // Recursive backtracker over a grid of "rooms" located at odd coordinates.

@@ -2,7 +2,6 @@ package academy.maze.impl;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
-import academy.maze.util.TerrainRandomizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +57,7 @@ public class KruskalGenerator extends AbstractRandomizedGenerator {
             }
         }
 
-        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
+        return new Maze(cells);
     }
 
     private int roomIndex(int x, int y, int rw) {

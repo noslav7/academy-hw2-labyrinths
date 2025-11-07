@@ -23,7 +23,7 @@ public final class MazeRenderer {
         int width = out.length == 0 ? 0 : out[0].length;
         int height = out.length;
 
-        char pathChar = '+';
+        char pathChar = style == GlyphStyle.ASCII ? '.' : '+';
         if (path != null) {
             for (Point p : path.points()) {
                 if (isInBounds(p, width, height)) {
