@@ -172,7 +172,6 @@ java -jar app.jar solve --algorithm=greedy   --file=maze2.txt --start=0,0 --end=
 - не найдены какие либо классы: `java.lang.NoClassDefFoundError: picocli/CommandLine`
 
 **Решение**
-
 Использовать для сборки fat jar, содержащий все необходимые зависимости:
 
 ```bash

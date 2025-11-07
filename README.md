@@ -69,14 +69,14 @@ cat maze_prim_unicode.txt
 java -cp ./target/project-1.0.jar academy.Application solve -a astar -f ./maze_dfs.txt -s 2,2 -e 19,10 -o ./out_astar.txt
 cat out_astar.txt
 # Unicode-вариант:
-java -cp ./target/project-1.0.jar academy.Application solve -a astar -f ./maze_dfs.txt -s 2,2 -e 19,10 --unicode -o ./out_astar_unicode.txt
+java -cp ./target/project-1.0.jar academy.Application solve -a astar -f ./maze_dfs_unicode.txt -s 2,2 -e 19,10 --unicode -o ./out_astar_unicode.txt
 cat out_astar_unicode.txt
 
 # Решение: Dijkstra
-java -cp ./target/project-1.0.jar academy.Application solve -a dijkstra -f ./maze_dfs.txt -s 2,2 -e 19,10 -o ./out_dijkstra.txt
+java -cp ./target/project-1.0.jar academy.Application solve -a dijkstra -f ./maze_prim.txt -s 2,2 -e 20,10 -o ./out_dijkstra.txt
 cat out_dijkstra.txt
 # Unicode-вариант:
-java -cp ./target/project-1.0.jar academy.Application solve -a dijkstra -f ./maze_dfs.txt -s 2,2 -e 19,10 --unicode -o ./out_dijkstra_unicode.txt
+java -cp ./target/project-1.0.jar academy.Application solve -a dijkstra -f ./maze_prim_unicode.txt -s 2,2 -e 20,10 --unicode -o ./out_dijkstra_unicode.txt
 cat out_dijkstra_unicode.txt
 ```
 
