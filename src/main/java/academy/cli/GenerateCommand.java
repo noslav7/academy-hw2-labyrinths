@@ -2,9 +2,11 @@ package academy.cli;
 
 import academy.maze.Generator;
 import academy.maze.dto.Maze;
+import academy.maze.dto.TerrainType;
 import academy.maze.impl.DepthFirstGenerator;
 import academy.maze.impl.KruskalGenerator;
 import academy.maze.impl.PrimGenerator;
+import academy.maze.util.Mazes;
 import academy.util.MazeRenderer;
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +53,8 @@ public class GenerateCommand implements Runnable {
 
         Maze maze = generator.generate(width, height);
         MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
-        String text = MazeRenderer.renderMaze(maze, style, true);
+        Maze displayMaze = unicode ? maze : Mazes.withUniformTerrain(maze, TerrainType.NORMAL);
+        String text = MazeRenderer.renderMaze(displayMaze, style, true);
 
         if (output != null) {
             try {

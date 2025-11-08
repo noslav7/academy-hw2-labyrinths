@@ -28,12 +28,12 @@ class MazeRendererTest {
         Path path = new Path(new Point[] {new Point(0, 0), new Point(1, 0), new Point(1, 1)});
         String rendered = MazeRenderer.renderWithPath(m, path, new Point(0, 0), new Point(1, 1));
 
-        // Start 'O' and End 'X' override path at ends; '+' appears on middle point
+        // Start 'O' and end 'X' override the path endpoints; '.' marks the intermediate path cell
         String[] lines = rendered.split("\n");
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(lines[0].charAt(0)).isEqualTo('O');
         softly.assertThat(lines[1].charAt(1)).isEqualTo('X');
-        softly.assertThat(lines[0].charAt(1)).isEqualTo('+');
+        softly.assertThat(lines[0].charAt(1)).isEqualTo('.');
 
         // Non-path PAVEMENT cell remains '.' (if not overridden by O/X/+)
         // In this case, end at (1,1) is 'X', so check another '.' placement

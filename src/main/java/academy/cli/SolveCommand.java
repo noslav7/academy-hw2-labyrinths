@@ -5,10 +5,12 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
+import academy.maze.dto.TerrainType;
 import academy.maze.impl.AStarSolver;
 import academy.maze.impl.BreadthFirstSolver;
 import academy.maze.impl.DijkstraSolver;
 import academy.maze.impl.GreedyBestFirstSolver;
+import academy.maze.util.Mazes;
 import academy.util.MazeIO;
 import academy.util.MazeRenderer;
 import academy.util.PointParser;
@@ -86,7 +88,8 @@ public class SolveCommand implements Runnable {
 
         Path path = solver.solve(maze, start, end);
         MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
-        String text = MazeRenderer.renderWithPath(maze, path, start, end, style);
+        Maze viewMaze = unicode ? maze : Mazes.withUniformTerrain(maze, TerrainType.NORMAL);
+        String text = MazeRenderer.renderWithPath(viewMaze, path, start, end, style);
 
         if (output != null) {
             MazeIO.write(output, text);
