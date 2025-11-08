@@ -3,7 +3,7 @@ package academy.maze.impl;
 import academy.maze.Generator;
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
-import academy.maze.util.Mazes;
+import academy.maze.util.TerrainRandomizer;
 import java.util.Random;
 
 abstract class AbstractRandomizedGenerator implements Generator {
@@ -25,7 +25,13 @@ abstract class AbstractRandomizedGenerator implements Generator {
 
     protected Maze smallMazeOrNull(int width, int height) {
         if (width < 3 || height < 3) {
-            return Mazes.openAll(width, height);
+            CellType[][] cells = new CellType[height][width];
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    cells[y][x] = CellType.PATH;
+                }
+            }
+            return buildMaze(cells);
         }
         return null;
     }
@@ -38,5 +44,9 @@ abstract class AbstractRandomizedGenerator implements Generator {
             }
         }
         return cells;
+    }
+
+    protected Maze buildMaze(CellType[][] cells) {
+        return new Maze(cells, TerrainRandomizer.randomize(cells, random));
     }
 }

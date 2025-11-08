@@ -56,7 +56,7 @@ public class PrimGenerator extends AbstractRandomizedGenerator {
             inMaze[fy][fx] = true;
             addFrontierOdd(fx, fy, frontier, width, height);
         }
-        return new Maze(cells);
+        return buildMaze(cells);
     }
 
     private void addFrontierOdd(int x, int y, List<int[]> frontier, int w, int h) {

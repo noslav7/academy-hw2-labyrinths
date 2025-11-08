@@ -26,7 +26,7 @@ public class DepthFirstGenerator extends AbstractRandomizedGenerator {
         boolean[][] visitedRooms = new boolean[height][width];
         // Start from the first odd cell inside the border
         carveRooms(1, 1, cells, visitedRooms, width, height);
-        return new Maze(cells);
+        return buildMaze(cells);
     }
 
     // Recursive backtracker over a grid of "rooms" located at odd coordinates.

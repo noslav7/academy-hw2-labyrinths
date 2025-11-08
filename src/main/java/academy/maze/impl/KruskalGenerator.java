@@ -57,7 +57,7 @@ public class KruskalGenerator extends AbstractRandomizedGenerator {
             }
         }
 
-        return new Maze(cells);
+        return buildMaze(cells);
     }
 
     private int roomIndex(int x, int y, int rw) {
