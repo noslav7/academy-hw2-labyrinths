@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * Default implementation that registers built-in maze generators.
- */
+/** Default implementation that registers built-in maze generators. */
 public class DefaultGeneratorFactory implements GeneratorFactory {
 
     private final Map<String, Supplier<Generator>> registry = new HashMap<>();
@@ -47,5 +45,3 @@ public class DefaultGeneratorFactory implements GeneratorFactory {
         return Objects.requireNonNull(algorithm, "algorithm").toLowerCase(Locale.ROOT);
     }
 }
-
-

@@ -10,9 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * Default implementation that registers built-in maze solvers.
- */
+/** Default implementation that registers built-in maze solvers. */
 public class DefaultSolverFactory implements SolverFactory {
 
     private final Map<String, Supplier<Solver>> registry = new HashMap<>();
@@ -52,4 +50,3 @@ public class DefaultSolverFactory implements SolverFactory {
         return Objects.requireNonNull(algorithm, "algorithm").toLowerCase(Locale.ROOT);
     }
 }
-

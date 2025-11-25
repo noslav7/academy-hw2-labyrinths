@@ -6,12 +6,9 @@ import academy.maze.GeneratorFactory;
 import academy.maze.dto.Maze;
 import academy.maze.dto.TerrainType;
 import academy.maze.util.Mazes;
+import academy.util.MazeIO;
 import academy.util.MazeRenderer;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -61,15 +58,7 @@ public class GenerateCommand implements Runnable {
         String text = MazeRenderer.renderMaze(displayMaze, style, true);
 
         if (output != null) {
-            try {
-                Path parent = output.toPath().getParent();
-                if (parent != null) {
-                    Files.createDirectories(parent);
-                }
-                Files.writeString(output.toPath(), text, StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            MazeIO.write(output, text);
         } else {
             System.out.print(text);
         }

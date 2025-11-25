@@ -1,8 +1,6 @@
 package academy.maze;
 
-/**
- * Factory for creating {@link Solver} instances by algorithm identifier.
- */
+/** Factory for creating {@link Solver} instances by algorithm identifier. */
 public interface SolverFactory {
 
     /**
@@ -14,4 +12,3 @@ public interface SolverFactory {
      */
     Solver create(String algorithm);
 }
-

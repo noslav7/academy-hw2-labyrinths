@@ -1,8 +1,6 @@
 package academy.maze;
 
-/**
- * Factory for creating {@link Generator} instances by algorithm identifier.
- */
+/** Factory for creating {@link Generator} instances by algorithm identifier. */
 public interface GeneratorFactory {
 
     /**
@@ -14,5 +12,3 @@ public interface GeneratorFactory {
      */
     Generator create(String algorithm);
 }
-
-
