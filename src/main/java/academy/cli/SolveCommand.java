@@ -1,25 +1,34 @@
 package academy.cli;
 
+import academy.maze.DefaultSolverFactory;
 import academy.maze.Solver;
+import academy.maze.SolverFactory;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
 import academy.maze.dto.TerrainType;
-import academy.maze.impl.AStarSolver;
-import academy.maze.impl.BreadthFirstSolver;
-import academy.maze.impl.DijkstraSolver;
-import academy.maze.impl.GreedyBestFirstSolver;
 import academy.maze.util.MazeValidator;
 import academy.maze.util.Mazes;
 import academy.util.MazeIO;
 import academy.util.MazeRenderer;
 import academy.util.PointParser;
 import java.io.File;
+import java.util.Objects;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 @Command(name = "solve", description = "Solve a maze with specified algorithm and points.")
 public class SolveCommand implements Runnable {
+
+    private final SolverFactory solverFactory;
+
+    public SolveCommand() {
+        this(new DefaultSolverFactory());
+    }
+
+    SolveCommand(SolverFactory solverFactory) {
+        this.solverFactory = Objects.requireNonNull(solverFactory, "solverFactory");
+    }
 
     @Option(
             names = {"-a", "--algorithm"},
@@ -55,14 +64,7 @@ public class SolveCommand implements Runnable {
         Maze maze = MazeIO.read(mazeFile);
         MazeValidator.requireNavigablePoints(maze, start, end);
 
-        Solver solver =
-                switch (algorithm.toLowerCase()) {
-                    case "astar", "a-star", "a*" -> new AStarSolver();
-                    case "dijkstra" -> new DijkstraSolver();
-                    case "bfs" -> new BreadthFirstSolver();
-                    case "greedy", "gbfs" -> new GreedyBestFirstSolver();
-                    default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
-                };
+        Solver solver = solverFactory.create(algorithm);
 
         Path path = solver.solve(maze, start, end);
         MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
