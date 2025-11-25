@@ -1,11 +1,10 @@
 package academy.cli;
 
+import academy.maze.DefaultGeneratorFactory;
 import academy.maze.Generator;
+import academy.maze.GeneratorFactory;
 import academy.maze.dto.Maze;
 import academy.maze.dto.TerrainType;
-import academy.maze.impl.DepthFirstGenerator;
-import academy.maze.impl.KruskalGenerator;
-import academy.maze.impl.PrimGenerator;
 import academy.maze.util.Mazes;
 import academy.util.MazeRenderer;
 import java.io.File;
@@ -13,11 +12,22 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 @Command(name = "generate", description = "Generate a maze with specified algorithm and dimensions.")
 public class GenerateCommand implements Runnable {
+
+    private final GeneratorFactory generatorFactory;
+
+    public GenerateCommand() {
+        this(new DefaultGeneratorFactory());
+    }
+
+    GenerateCommand(GeneratorFactory generatorFactory) {
+        this.generatorFactory = Objects.requireNonNull(generatorFactory, "generatorFactory");
+    }
 
     @Option(
             names = {"-a", "--algorithm"},
@@ -43,13 +53,7 @@ public class GenerateCommand implements Runnable {
 
     @Override
     public void run() {
-        Generator generator =
-                switch (algorithm.toLowerCase()) {
-                    case "dfs" -> new DepthFirstGenerator();
-                    case "prim" -> new PrimGenerator();
-                    case "kruskal" -> new KruskalGenerator();
-                    default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
-                };
+        Generator generator = generatorFactory.create(algorithm);
 
         Maze maze = generator.generate(width, height);
         MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
