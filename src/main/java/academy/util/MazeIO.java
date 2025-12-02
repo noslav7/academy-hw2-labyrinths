@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 
 public final class MazeIO {
     private MazeIO() {}
@@ -25,7 +26,7 @@ public final class MazeIO {
                 String line = lines.get(y);
                 for (int x = 0; x < width; x++) {
                     char c = line.charAt(x);
-                    if (isWallChar(c)) {
+                    if (WALL_GLYPHS.contains(c)) {
                         cells[y][x] = CellType.WALL;
                         terrain[y][x] = TerrainType.NORMAL;
                     } else {
@@ -40,39 +41,9 @@ public final class MazeIO {
         }
     }
 
-    private static boolean isWallChar(char c) {
-        return switch (c) {
-            case '#',
-                    '█',
-                    '┏',
-                    '┓',
-                    '┗',
-                    '┛',
-                    '┳',
-                    '┻',
-                    '┯',
-                    '┷',
-                    '┠',
-                    '┨',
-                    '┝',
-                    '┥',
-                    '┞',
-                    '┟',
-                    '┢',
-                    '┡',
-                    '┤',
-                    '├',
-                    '┐',
-                    '┌',
-                    '┘',
-                    '└',
-                    '│',
-                    '┃',
-                    '─',
-                    '━' -> true;
-            default -> false;
-        };
-    }
+    private static final Set<Character> WALL_GLYPHS = Set.of(
+            '#', '█', '┏', '┓', '┗', '┛', '┳', '┻', '┯', '┷', '┠', '┨', '┝', '┥', '┞', '┟', '┢', '┡', '┤', '├', '┐',
+            '┌', '┘', '└', '│', '┃', '─', '━');
 
     public static void write(File output, String text) {
         try {

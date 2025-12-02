@@ -10,11 +10,13 @@ import academy.util.MazeIO;
 import academy.util.MazeRenderer;
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.ExitCode;
 import picocli.CommandLine.Option;
 
 @Command(name = "generate", description = "Generate a maze with specified algorithm and dimensions.")
-public class GenerateCommand implements Runnable {
+public class GenerateCommand implements Callable<Integer> {
 
     private final GeneratorFactory generatorFactory;
 
@@ -22,7 +24,7 @@ public class GenerateCommand implements Runnable {
         this(new DefaultGeneratorFactory());
     }
 
-    GenerateCommand(GeneratorFactory generatorFactory) {
+    private GenerateCommand(GeneratorFactory generatorFactory) {
         this.generatorFactory = Objects.requireNonNull(generatorFactory, "generatorFactory");
     }
 
@@ -49,18 +51,27 @@ public class GenerateCommand implements Runnable {
     private boolean unicode;
 
     @Override
-    public void run() {
-        Generator generator = generatorFactory.create(algorithm);
+    public Integer call() {
+        try {
+            Generator generator = generatorFactory.create(algorithm);
 
-        Maze maze = generator.generate(width, height);
-        MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
-        Maze displayMaze = unicode ? maze : Mazes.withUniformTerrain(maze, TerrainType.NORMAL);
-        String text = MazeRenderer.renderMaze(displayMaze, style, true);
+            Maze maze = generator.generate(width, height);
+            MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
+            Maze displayMaze = unicode ? maze : Mazes.withUniformTerrain(maze, TerrainType.NORMAL);
+            String text = MazeRenderer.renderMaze(displayMaze, style, true);
 
-        if (output != null) {
-            MazeIO.write(output, text);
-        } else {
-            System.out.print(text);
+            if (output != null) {
+                MazeIO.write(output, text);
+            } else {
+                System.out.print(text);
+            }
+            return ExitCode.OK;
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return ExitCode.USAGE;
+        } catch (Exception e) {
+            System.err.println("Failed to generate maze: " + e.getMessage());
+            return ExitCode.SOFTWARE;
         }
     }
 }

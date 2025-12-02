@@ -90,15 +90,7 @@ public final class MazeRenderer {
     }
 
     private static char terrainSymbol(TerrainType type, GlyphStyle style) {
-        if (style == GlyphStyle.ASCII) {
-            return type.symbol();
-        }
-        return switch (type) {
-            case NORMAL -> '·';
-            case SAND -> '░';
-            case SWAMP -> '▒';
-            case PAVEMENT -> '∙';
-        };
+        return style == GlyphStyle.ASCII ? type.symbol() : type.unicodeSymbol();
     }
 
     private static boolean isInBounds(Point p, int width, int height) {

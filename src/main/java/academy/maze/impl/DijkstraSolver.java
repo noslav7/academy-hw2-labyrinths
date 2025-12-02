@@ -5,6 +5,7 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
+import academy.maze.util.Directions;
 import academy.maze.util.PathUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +32,8 @@ public class DijkstraSolver implements Solver {
             int cd = cur[2];
             if (cd != dist[cy][cx]) continue; // outdated entry
             if (cx == end.x() && cy == end.y()) break;
-            for (int[] d : DIRS) {
-                int nx = cx + d[0], ny = cy + d[1];
+            for (Directions.Direction dir : Directions.CARDINAL) {
+                int nx = cx + dir.dx(), ny = cy + dir.dy();
                 if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
                 if (maze.cells()[ny][nx] == CellType.WALL) continue;
                 int nd = dist[cy][cx] + maze.costAt(nx, ny);
@@ -46,6 +47,4 @@ public class DijkstraSolver implements Solver {
         if (dist[end.y()][end.x()] >= Integer.MAX_VALUE / 8) return new Path(new Point[0]);
         return PathUtils.reconstructPath(prev, PathUtils.key(end.x(), end.y(), w), w);
     }
-
-    private static final int[][] DIRS = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 }

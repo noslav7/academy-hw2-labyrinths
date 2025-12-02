@@ -5,6 +5,7 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
+import academy.maze.util.Directions;
 import academy.maze.util.PathUtils;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,8 +51,8 @@ public class AStarSolver implements Solver {
                 return PathUtils.reconstructPath(came, cKey, w);
             }
             if (!closed.add(cKey)) continue;
-            for (int[] d : DIRS) {
-                int nx = cx + d[0], ny = cy + d[1];
+            for (Directions.Direction dir : Directions.CARDINAL) {
+                int nx = cx + dir.dx(), ny = cy + dir.dy();
                 if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
                 if (maze.cells()[ny][nx] == CellType.WALL) continue;
                 int nKey = PathUtils.key(nx, ny, w);
@@ -71,6 +72,4 @@ public class AStarSolver implements Solver {
     private int heuristic(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
-
-    private static final int[][] DIRS = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 }

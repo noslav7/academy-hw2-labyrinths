@@ -14,11 +14,13 @@ import academy.util.MazeRenderer;
 import academy.util.PointParser;
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.ExitCode;
 import picocli.CommandLine.Option;
 
 @Command(name = "solve", description = "Solve a maze with specified algorithm and points.")
-public class SolveCommand implements Runnable {
+public class SolveCommand implements Callable<Integer> {
 
     private final SolverFactory solverFactory;
 
@@ -26,7 +28,7 @@ public class SolveCommand implements Runnable {
         this(new DefaultSolverFactory());
     }
 
-    SolveCommand(SolverFactory solverFactory) {
+    private SolveCommand(SolverFactory solverFactory) {
         this.solverFactory = Objects.requireNonNull(solverFactory, "solverFactory");
     }
 
@@ -57,24 +59,33 @@ public class SolveCommand implements Runnable {
     private boolean unicode;
 
     @Override
-    public void run() {
-        Point start = PointParser.parseOrExit(startStr);
-        Point end = PointParser.parseOrExit(endStr);
+    public Integer call() {
+        try {
+            Point start = PointParser.parse(startStr);
+            Point end = PointParser.parse(endStr);
 
-        Maze maze = MazeIO.read(mazeFile);
-        MazeValidator.requireNavigablePoints(maze, start, end);
+            Maze maze = MazeIO.read(mazeFile);
+            MazeValidator.requireNavigablePoints(maze, start, end);
 
-        Solver solver = solverFactory.create(algorithm);
+            Solver solver = solverFactory.create(algorithm);
 
-        Path path = solver.solve(maze, start, end);
-        MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
-        Maze viewMaze = unicode ? maze : Mazes.withUniformTerrain(maze, TerrainType.NORMAL);
-        String text = MazeRenderer.renderWithPath(viewMaze, path, start, end, style);
+            Path path = solver.solve(maze, start, end);
+            MazeRenderer.GlyphStyle style = unicode ? MazeRenderer.GlyphStyle.UNICODE : MazeRenderer.GlyphStyle.ASCII;
+            Maze viewMaze = unicode ? maze : Mazes.withUniformTerrain(maze, TerrainType.NORMAL);
+            String text = MazeRenderer.renderWithPath(viewMaze, path, start, end, style);
 
-        if (output != null) {
-            MazeIO.write(output, text);
-        } else {
-            System.out.print(text);
+            if (output != null) {
+                MazeIO.write(output, text);
+            } else {
+                System.out.print(text);
+            }
+            return ExitCode.OK;
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return ExitCode.USAGE;
+        } catch (Exception e) {
+            System.err.println("Failed to solve maze: " + e.getMessage());
+            return ExitCode.SOFTWARE;
         }
     }
 }

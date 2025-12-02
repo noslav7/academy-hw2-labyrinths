@@ -5,6 +5,7 @@ import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
 import academy.maze.dto.Path;
 import academy.maze.dto.Point;
+import academy.maze.util.Directions;
 import academy.maze.util.PathUtils;
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -29,8 +30,8 @@ public class BreadthFirstSolver implements Solver {
             int[] cur = dq.pollFirst();
             int cx = cur[0], cy = cur[1];
             if (cx == end.x() && cy == end.y()) break;
-            for (int[] d : DIRS) {
-                int nx = cx + d[0], ny = cy + d[1];
+            for (Directions.Direction dir : Directions.CARDINAL) {
+                int nx = cx + dir.dx(), ny = cy + dir.dy();
                 if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
                 if (maze.cells()[ny][nx] == CellType.WALL) continue;
                 if (seen[ny][nx]) continue;
@@ -42,6 +43,4 @@ public class BreadthFirstSolver implements Solver {
         if (!seen[end.y()][end.x()]) return new Path(new Point[0]);
         return PathUtils.reconstructPath(prev, PathUtils.key(end.x(), end.y(), w), w);
     }
-
-    private static final int[][] DIRS = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 }

@@ -1,6 +1,7 @@
 package academy.maze;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import academy.maze.dto.CellType;
 import academy.maze.dto.Maze;
@@ -46,16 +47,15 @@ class TerrainParsingTest {
     }
 
     @Test
-    void givenUnknownSymbols_whenRead_thenTreatedAsNormal() throws Exception {
+    void givenUnknownSymbols_whenRead_thenFailFast() throws Exception {
         String content = " a \n" + " b \n";
         Path tmp = Files.createTempFile("maze-terrain-unk-", ".txt");
         Files.writeString(tmp, content);
-        Maze m = MazeIO.read(new File(tmp.toString()));
-        TerrainType[][] t = m.terrain();
-        SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(t[0][1]).isEqualTo(TerrainType.NORMAL);
-        softly.assertThat(t[1][1]).isEqualTo(TerrainType.NORMAL);
-        softly.assertAll();
+        java.util.Objects.requireNonNull(tmp, "temp path must not be null");
+        File file = java.util.Objects.requireNonNull(tmp.toFile(), "temp file must not be null");
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class, () -> MazeIO.read(file), "Expected failure for unknown symbol");
+        assertThat(ex).hasMessageContaining("Unsupported terrain symbol");
     }
 
     @Test
